@@ -1,0 +1,3 @@
+<app-form-calculo (calculoRealizado)="calculoRealizado($event)" *ngIf="!calculoHecho"></app-form-calculo>
+<app-calculos [formulario]="formulario" *ngIf="calculoHecho"></app-calculos>
+<button *ngIf="calculoHecho" (click)="calculoHecho = false" class="btn btn-primary">Volver</button>

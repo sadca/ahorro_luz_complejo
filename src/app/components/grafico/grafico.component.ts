@@ -11,6 +11,7 @@ import { Label } from 'ng2-charts';
 export class GraficoComponent implements OnInit {
   public barChartOptions: ChartOptions = {
     responsive: true,
+    showLines: false,
     legend: {
       labels: { fontColor: 'black' }
     },
@@ -18,13 +19,13 @@ export class GraficoComponent implements OnInit {
     scales: {
       xAxes: [
         {
-          ticks: { fontColor: 'black' },
+          ticks: { fontColor: 'black', beginAtZero: true },
           gridLines: { color: 'rgba(0,0,0,0.1)' }
         }
       ],
       yAxes: [
         {
-          ticks: { fontColor: 'black' },
+          ticks: { fontColor: 'black', beginAtZero: true },
           gridLines: { color: 'rgba(0,0,0,0.1)' }
         }
       ]
@@ -39,30 +40,28 @@ export class GraficoComponent implements OnInit {
     }
   };
   @Input() barChartLabels: Label[] = [];
-  public barChartType: ChartType = 'bar';
+  @Input() barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [pluginDataLabels];
 
   @Input() barChartData: ChartDataSets[] = [];
   public lineChartColors: Array<any> = [
     // {
-    //   // grey
-    //   backgroundColor: 'blue',
-    //   borderColor: 'white',
+    //   backgroundColor: 'rgba(235, 61, 61, 0.8)',
+    //   borderColor: 'black',
     //   pointBackgroundColor: 'green',
     //   pointBorderColor: 'yellow',
     //   pointHoverBackgroundColor: 'purple',
     //   pointHoverBorderColor: 'brown'
     // },
     // {
-    //   // dark grey
-    //   backgroundColor: 'red',
+    //   backgroundColor: 'rgba(95, 248, 95, 0.8)',
     //   borderColor: 'rgba(77,83,96,1)',
     //   pointBackgroundColor: 'rgba(77,83,96,1)',
     //   pointBorderColor: '#fff',
     //   pointHoverBackgroundColor: '#fff',
     //   pointHoverBorderColor: 'rgba(77,83,96,1)'
-    // },
+    // }
     // {
     //   // grey
     //   backgroundColor: 'green',

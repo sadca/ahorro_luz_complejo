@@ -32,7 +32,7 @@
                     <div class="input-group">
                         <input [(ngModel)]="p1"
                             [ngClass]="{'is-invalid': form.submitted && form.controls['p1'] && form.controls['p1'].errors}"
-                            number type="number" class="form-control" id="p1" name="p1" placeholder="(P1)">
+                            number required type="number" class="form-control" id="p1" name="p1" placeholder="(P1)">
                         <div class="input-group-prepend">
                             <div class="input-group-text">ekW</div>
                         </div>
@@ -48,7 +48,7 @@
                     <div class="input-group">
                         <input [(ngModel)]="p2"
                             [ngClass]="{'is-invalid': form.submitted && form.controls['p2'] && form.controls['p2'].errors}"
-                            number type="number" class="form-control" id="p2" name="p2" placeholder="(P2)">
+                            number required type="number" class="form-control" id="p2" name="p2" placeholder="(P2)">
                         <div class="input-group-prepend">
                             <div class="input-group-text">ekW</div>
                         </div>
@@ -64,7 +64,7 @@
                     <div class="input-group">
                         <input [(ngModel)]="p3"
                             [ngClass]="{'is-invalid': form.submitted && form.controls['p3'] && form.controls['p3'].errors}"
-                            number type="number" class="form-control" id="p3" name="p3" placeholder="(P3)">
+                            number required type="number" class="form-control" id="p3" name="p3" placeholder="(P3)">
                         <div class="input-group-prepend">
                             <div class="input-group-text">ekW</div>
                         </div>
@@ -84,16 +84,10 @@
                 <div class="col-4">
                     <label for="precioP1">Precio P1</label>
                     <div class="input-group">
-                        <input [(ngModel)]="precioP1"
-                            [ngClass]="{'is-invalid': form.submitted && form.controls['precioP1'] && form.controls['precioP1'].errors}"
-                            number type="number" class="form-control" id="precioP1" name="precioP1"
-                            placeholder="Precio P1">
+                        <input [(ngModel)]="precioP1" number type="number" class="form-control" id="precioP1"
+                            name="precioP1" placeholder="Precio P1">
                         <div class="input-group-prepend">
                             <div class="input-group-text">€</div>
-                        </div>
-                        <div *ngIf="form.submitted && form.controls['precioP1'] && form.controls['precioP1'].errors"
-                            class="invalid-feedback">
-                            Este campo es obligatorio
                         </div>
                     </div>
                 </div>
@@ -101,16 +95,10 @@
                 <div class="col-4">
                     <label for="precioP2">Precio P2</label>
                     <div class="input-group">
-                        <input [(ngModel)]="precioP2"
-                            [ngClass]="{'is-invalid': form.submitted && form.controls['precioP2'] && form.controls['precioP2'].errors}"
-                            number type="number" class="form-control" id="precioP2" name="precioP2"
-                            placeholder="Precio P2">
+                        <input [(ngModel)]="precioP2" number type="number" class="form-control" id="precioP2"
+                            name="precioP2" placeholder="Precio P2">
                         <div class="input-group-prepend">
                             <div class="input-group-text">€</div>
-                        </div>
-                        <div *ngIf="form.submitted && form.controls['precioP2'] && form.controls['precioP2'].errors"
-                            class="invalid-feedback">
-                            Este campo es obligatorio
                         </div>
                     </div>
                 </div>
@@ -118,22 +106,31 @@
                 <div class="col-4">
                     <label for="precioP3">Precio P3</label>
                     <div class="input-group">
-                        <input [(ngModel)]="precioP3"
-                            [ngClass]="{'is-invalid': form.submitted && form.controls['precioP3'] && form.controls['precioP3'].errors}"
-                            number type="number" class="form-control" id="precioP3" name="precioP3"
-                            placeholder="Precio P3">
+                        <input [(ngModel)]="precioP3" number type="number" class="form-control" id="precioP3"
+                            name="precioP3" placeholder="Precio P3">
                         <div class="input-group-prepend">
                             <div class="input-group-text">€</div>
-                        </div>
-                        <div *ngIf="form.submitted && form.controls['precioP3'] && form.controls['precioP3'].errors"
-                            class="invalid-feedback">
-                            Este campo es obligatorio
                         </div>
                     </div>
                 </div>
 
             </div>
 
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-4">
+                    <label for="impuestoElectrico">Precio P1</label>
+                    <div class="input-group">
+                        <input [(ngModel)]="impuestoElectrico" number type="number" class="form-control"
+                            id="impuestoElectrico" name="impuestoElectrico" placeholder="Impuesto Eléctrico">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
@@ -151,7 +148,8 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let archivo of archivos">
-                                <td [ngClass]="{'text-green': archivo.progreso >= 100}">{{ archivo.nombreArchivo }}</td>
+                                <td [ngClass]="{'text-green': archivo.progreso >= 100}">
+                                    {{ archivo.nombreArchivo }}</td>
                                 <td>
                                     <button (click)="eliminarArchivo(archivo)"
                                         class="btn btn-danger btn-sm btn-block">Eliminar</button>

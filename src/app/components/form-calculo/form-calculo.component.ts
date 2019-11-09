@@ -18,6 +18,7 @@ export class FormCalculoComponent implements OnInit {
   precioP1: number;
   precioP2: number;
   precioP3: number;
+  impuestoElectrico: number;
   archivo: any;
   archivos: FileItem[] = [];
   estaSobreElemento = false;
@@ -41,7 +42,13 @@ export class FormCalculoComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.propietario = 'ALF TECH';
+    this.p1 = 45;
+    this.p2 = 45;
+    this.p3 = 45;
+    this.tarifa = '3.0A';
+  }
 
   calcular(form: any) {
     if (!form.valid || this.archivos.length <= 0) {
@@ -63,7 +70,8 @@ export class FormCalculoComponent implements OnInit {
       precioP1: this.precioP1,
       precioP2: this.precioP2,
       precioP3: this.precioP3,
-      archivo: this.archivos[0]
+      archivo: this.archivos[0],
+      impuestoElectrico: this.impuestoElectrico
     };
     this.calculoRealizado.emit(datos);
   }

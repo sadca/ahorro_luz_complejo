@@ -18,8 +18,10 @@ export class CalculosService {
     formdata.append('archivo', datos.archivo.archivo);
     formdata.append('propietario', datos.propietario);
     formdata.append('tarifa', datos.tarifa);
-
-    // TODO: AQUÍ LOS DEMÁS PARÁMETROS QUE QUERAMOS PASAR
+    formdata.append('p1', datos.p1);
+    formdata.append('p2', datos.p2);
+    formdata.append('p3', datos.p3);
+    formdata.append('impuestoElectrico', datos.impuestoElectrico);
 
     const url = this.webServiceUrl;
 

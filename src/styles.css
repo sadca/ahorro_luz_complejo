@@ -11,7 +11,7 @@
 .animated {
   animation-duration: 1s;
   animation-fill-mode: both;
-  color:rgb(0, 0, 0)
+  color:rgb(235, 61, 61)
 }
 
 .animated.infinite {

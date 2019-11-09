@@ -6,7 +6,8 @@ import { Label } from 'ng2-charts';
 import { Router } from '@angular/router';
 import { map, filter } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import * as $ from 'jquery';
+import * as jsPdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-calculos',
@@ -14,22 +15,39 @@ import * as $ from 'jquery';
   styles: []
 })
 export class CalculosComponent implements OnInit {
-  @ViewChild('to-pdf', { static: true }) element: ElementRef;
   @Input() formulario: any = {
     propietario: 'Usureros',
     tarifa: '2HA'
   };
+
+  @ViewChild('imagen', { static: true }) imagen: ElementRef;
+
+  tiposChart: any[] = [
+    { default: false, valor: 'line', nombre: 'Lineas' },
+    { default: true, valor: 'bar', nombre: 'Barras' },
+    { default: false, valor: 'horizontalBar', nombre: 'Barras Horizontales' },
+    { default: false, valor: 'radar', nombre: 'Radar' },
+    { default: false, valor: 'doughnut', nombre: 'Donut' },
+    { default: false, valor: 'polarArea', nombre: 'Area' },
+    { default: false, valor: 'bubble', nombre: 'Burbujas' },
+    { default: false, valor: 'pie', nombre: 'Tarta' },
+    { default: false, valor: 'scatter', nombre: 'Dispersión' }
+  ];
+
   datos: any;
   costePagado: number[] = [];
   labels: Label[] = [];
   costeAhorrado: number[] = [];
+  costeCalculadoMax: number[] = [];
 
   totalPagado: number = 0;
   totalAhorrado: number = 0;
+  totalCalculadoMax: number = 0;
   labelsTotal: Label[] = ['Total'];
   calculoTotal: ChartDataSets[] = [];
-
   costeTotal: ChartDataSets[] = [];
+  costeTotal2: ChartDataSets[] = [];
+  calculoMaxTotal: ChartDataSets[] = [];
 
   constructor(private calculoServ: CalculosService, private router: Router) {}
 
@@ -54,30 +72,60 @@ export class CalculosComponent implements OnInit {
       )
       .pipe(
         map((data: any) => {
-          return JSON.parse(data.body);
+          // console.log('Datos antes', data);
+          if (data.body) {
+            return JSON.parse(data.body);
+          } else {
+            return data;
+          }
         })
       )
       .subscribe(
         (data: any) => {
-          console.log('Datos pasados', this.formulario);
-          console.log(data);
+          // console.log('Datos pasados', this.formulario);
+
+          if (!data.ok) {
+            Swal.fire({
+              type: 'error',
+              title: 'Algo ha ocurrido...',
+              text:
+                'No hemos podido calcular su factura, repita el proceso de nuevo, por favor'
+            });
+            return;
+          }
 
           this.datos = data.results;
-          // tslint:disable-next-line: prefer-for-of
-          for (let i = data.results[0].data.length - 1; i >= 0; i--) {
-            // data.results[0].data[i].CUPS
-            this.labels.push(
-              this.construirLabel(data.results[0].data[i].fechaInicio) +
-                ' - ' +
-                this.construirLabel(data.results[0].data[i].fechaFin)
-            );
-            this.costeAhorrado.push(Math.floor(data.results[0].data[i].coste));
-            this.totalAhorrado += Math.floor(data.results[0].data[i].coste);
+          console.log(this.datos);
+          if (data.results.length >= 1) {
+            for (let i = data.results[0].data.length - 1; i >= 0; i--) {
+              // data.results[0].data[i].CUPS
+              this.labels.push(
+                this.construirLabel(data.results[0].data[i].fechaInicio) +
+                  ' - ' +
+                  this.construirLabel(data.results[0].data[i].fechaFin)
+              );
+              this.costeAhorrado.push(
+                Math.floor(data.results[0].data[i].coste)
+              );
+              this.totalAhorrado += Math.floor(data.results[0].data[i].coste);
+            }
           }
-          // tslint:disable-next-line: prefer-for-of
-          for (let i = data.results[1].data.length - 1; i >= 0; i--) {
-            this.costePagado.push(Math.round(data.results[1].data[i].coste));
-            this.totalPagado += Math.round(data.results[1].data[i].coste);
+          if (data.results.length >= 2) {
+            for (let i = data.results[1].data.length - 1; i >= 0; i--) {
+              this.costePagado.push(Math.round(data.results[1].data[i].coste));
+              this.totalPagado += Math.round(data.results[1].data[i].coste);
+            }
+          }
+
+          if (data.results.length >= 3) {
+            for (let i = data.results[2].data.length - 1; i >= 0; i--) {
+              this.costeCalculadoMax.push(
+                Math.round(data.results[2].data[i].coste)
+              );
+              this.totalCalculadoMax += Math.round(
+                data.results[2].data[i].coste
+              );
+            }
           }
 
           this.costeTotal = [
@@ -88,6 +136,18 @@ export class CalculosComponent implements OnInit {
           this.calculoTotal = [
             { data: [this.totalPagado], label: 'Total Pagado' },
             { data: [this.totalAhorrado], label: 'Total Ahorrado' }
+          ];
+
+          if (this.costeCalculadoMax.length > 1) {
+            this.costeTotal2 = [
+              { data: this.costePagado, label: 'Pagado' },
+              { data: this.costeCalculadoMax, label: 'Calculado Max' }
+            ];
+          }
+
+          this.calculoMaxTotal = [
+            { data: [this.totalPagado], label: 'Total Pagado' },
+            { data: [this.totalCalculadoMax], label: 'Total Calculado Max' }
           ];
 
           Swal.close();
@@ -127,36 +187,6 @@ export class CalculosComponent implements OnInit {
     return result;
   }
 
-  // GeneratePDF() {
-  //   html2canvas(this.element.nativeElement, <Html2Canvas.Html2CanvasOptions>{
-  //     onrendered: function(canvas: HTMLCanvasElement) {
-  //       var pdf = new jsPDF('p', 'pt', 'a4');
-
-  //       pdf.addHTML(canvas, function() {
-  //         pdf.save('web.pdf');
-  //       });
-  //     }
-  //   });
-  // }
-
-  exportarTablas() {
-    // $('table').tableExport({
-    //   headers: true, // (Boolean), display table headers (th or td elements) in the <thead>, (default: true)
-    //   footers: true, // (Boolean), display table footers (th or td elements) in the <tfoot>, (default: false)
-    //   formats: ['xlsx', 'csv', 'txt'], // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
-    //   filename: 'id', // (id, String), filename for the downloaded file, (default: 'id')
-    //   bootstrap: true, // (Boolean), style buttons using bootstrap, (default: true)
-    //   exportButtons: true, // (Boolean), automatically generate the built-in export
-    // buttons for each of the specified formats (default: true)
-    //   position: 'bottom', // (top, bottom), position of the caption element relative to table, (default: 'bottom')
-    //   ignoreRows: null, // (Number, Number[]), row indices to exclude from the exported file(s) (default: null)
-    //   ignoreCols: null, // (Number, Number[]), column indices to exclude from the exported file(s) (default: null)
-    //   trimWhitespace: true, // (Boolean), remove all leading/trailing newlines,
-    // spaces, and tabs from cell text in the exported file(s) (default: false)
-    //   RTL: false // (Boolean), set direction of the worksheet to right-to-left (default: false)
-    // });
-  }
-
   exportarGrafico(event: any, index: number) {
     const anchor = event.target;
 
@@ -167,70 +197,55 @@ export class CalculosComponent implements OnInit {
     anchor.download = 'test.png';
   }
 
-  exportarGraficos(event: any) {
+  exportarPDF(event: any) {
     const anchor = event.target;
-    const elementos = document.getElementsByTagName('canvas');
-
-    let element = elementos[0];
+    const element = document.getElementsByTagName('canvas')[0];
     anchor.href = element.toDataURL();
-    anchor.download = 'primero.png';
 
-    element = elementos[1];
-    const anchor2 = event.target;
-    anchor2.href = element.toDataURL();
-    anchor2.download = 'segundo.png';
-  }
+    const doc = new jsPdf();
+    // doc.setFontSize(15);
+    // doc.text('SADCA', 170, 15);
+    // const columns = ['', 'P1', 'P2', 'P3'];
+    // const data = [
+    //   [1, 'Hola', 'hola@gmail.com', 'Mexico'],
+    //   [2, 'Hello', 'hello@gmail.com', 'Estados Unidos'],
+    //   [3, 'Otro', 'otro@gmail.com', 'Otro']
+    // ];
+    // doc.autoTable(columns, data, { margin: 25, tableWidth: 'wrap' });
+    doc.setFontSize(40);
+    doc.text(this.formulario.propietario, 20, 30);
+    doc.addImage(anchor.href, 'PNG', 15, 40, 180, 100);
+    doc.autoTable({
+      head: [['', 'P1', 'P2', 'P3']],
+      body: [
+        [
+          'Actual',
+          this.datos[1].data[0].potenciaP1,
+          this.datos[1].data[0].potenciaP2,
+          this.datos[1].data[0].potenciaP3
+        ],
+        [
+          'Optimizada',
+          this.datos[0].data[0].potenciaP1,
+          this.datos[0].data[0].potenciaP2,
+          this.datos[0].data[0].potenciaP3
+        ]
+      ],
+      margin: { top: 160 }
+    });
+    html2canvas(this.imagen.nativeElement).then(canvas => {
+      doc.addImage(canvas.toDataURL(), 'JPEG', 170, 15, 20, 6);
+    });
+    setTimeout(() => {
+      const anchor2 = event.target;
+      const element2 = document.getElementsByTagName('canvas')[1];
+      anchor2.href = element2.toDataURL();
 
-  generarPDF(event: any) {
-    // html2canvas(document.querySelector('#todo')).then(canvas => {
-    //   document.body.appendChild(canvas);
-    // });
-    // addHTML()
-    // addFont()
-    // addPage()
-    // addMetaData()
-    // const data = document.getElementById('todo');
-    // console.log(data);
-    // html2canvas(data).then(canvas => {
-    //   // Few necessary setting options
-    //   const imgWidth = 208;
-    //   const pageHeight = 295;
-    //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    //   const heightLeft = imgHeight;
-    //   const contentDataURL = canvas.toDataURL('image/png');
-    //   const pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-    //   const position = 0;
-    //   pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-    //   pdf.addHTML(data);
-    //   pdf.save('MYPdf.pdf'); // Generated PDF
-    // });
-    // const doc = new jsPDF();
-    // const elementHTML = $('#todo').html();
-    // console.log(elementHTML);
-    // const specialElementHandlers = {
-    //   // tslint:disable-next-line: object-literal-shorthand
-    //   '#elementH': (element, renderer) => {
-    //     return true;
-    //   }
-    // };
-    // const margin = {
-    //   top: 0,
-    //   left: 0,
-    //   right: 0,
-    //   bottom: 0
-    // };
-    // doc.fromHTML(
-    //   elementHTML,
-    //   15,
-    //   15,
-    //   {
-    //     width: 170,
-    //     elementHandlers: specialElementHandlers
-    //   },
-    //   () => {
-    //     doc.save('postres.pdf');
-    //   },
-    //   margin
-    // );
+      doc.addPage('a4');
+      doc.addImage(anchor2.href, 'PNG', 15, 40, 180, 100);
+      doc.save('a4.pdf');
+      console.log('gola');
+    }, 5000);
+    // anchor.download = 'test.png';
   }
 }

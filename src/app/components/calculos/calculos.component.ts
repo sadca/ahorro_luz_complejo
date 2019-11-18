@@ -72,7 +72,7 @@ export class CalculosComponent implements OnInit {
       )
       .pipe(
         map((data: any) => {
-          // console.log('Datos antes', data);
+          console.log('Datos antes', data);
           if (data.body) {
             return JSON.parse(data.body);
           } else {
@@ -82,7 +82,7 @@ export class CalculosComponent implements OnInit {
       )
       .subscribe(
         (data: any) => {
-          // console.log('Datos pasados', this.formulario);
+          console.log('Datos pasados', this.formulario);
 
           if (!data.ok) {
             Swal.fire({
@@ -197,55 +197,185 @@ export class CalculosComponent implements OnInit {
     anchor.download = 'test.png';
   }
 
-  exportarPDF(event: any) {
-    const anchor = event.target;
-    const element = document.getElementsByTagName('canvas')[0];
-    anchor.href = element.toDataURL();
-
+  async exportarPDF(event: any) {
     const doc = new jsPdf();
-    // doc.setFontSize(15);
-    // doc.text('SADCA', 170, 15);
-    // const columns = ['', 'P1', 'P2', 'P3'];
-    // const data = [
-    //   [1, 'Hola', 'hola@gmail.com', 'Mexico'],
-    //   [2, 'Hello', 'hello@gmail.com', 'Estados Unidos'],
-    //   [3, 'Otro', 'otro@gmail.com', 'Otro']
-    // ];
-    // doc.autoTable(columns, data, { margin: 25, tableWidth: 'wrap' });
-    doc.setFontSize(40);
-    doc.text(this.formulario.propietario, 20, 30);
-    doc.addImage(anchor.href, 'PNG', 15, 40, 180, 100);
+
+    const mt = 10;
+    const ml = 20;
+
+    // Empresa cliente
+    // doc.text(this.formulario.propietario, ml, 30);
+    doc.setFont('courier');
+    doc.setFontSize(10);
+    const hoy = new Date();
+    doc.text(
+      hoy.getDate() + '/' + hoy.getMonth() + '/' + hoy.getFullYear(),
+      ml,
+      mt
+    );
+
+    // Titular
+    doc.setFontStyle('bold');
+    doc.text('Nombre del titular:', ml, mt + 25);
+    doc.setFontStyle('normal');
+    doc.text(this.formulario.propietario, ml + 42, mt + 25);
+
+    // CIF
+    doc.setFontStyle('bold');
+    doc.text('CIF:', ml, mt + 30);
+    doc.setFontStyle('normal');
+    doc.text('cif', ml + 10, mt + 30);
+
+    // Tarifa
+    doc.setFontStyle('bold');
+    doc.text('Tarifa:', ml, mt + 35);
+    doc.setFontStyle('normal');
+    doc.text(this.formulario.tarifa, ml + 17, mt + 35);
+
+    // CUPS
+    doc.setFontStyle('bold');
+    doc.text('CUPS:', ml, mt + 40);
+    doc.setFontStyle('normal');
+    doc.text(
+      this.formulario.archivo.nombreArchivo.split('.')[0],
+      ml + 12,
+      mt + 40
+    );
+
+    doc.text('Potencia Actual', ml + 85, mt + 55, null, null, 'center');
+
+    // Tabla de potencias
     doc.autoTable({
       head: [['', 'P1', 'P2', 'P3']],
       body: [
         [
           'Actual',
-          this.datos[1].data[0].potenciaP1,
-          this.datos[1].data[0].potenciaP2,
-          this.datos[1].data[0].potenciaP3
-        ],
-        [
-          'Optimizada',
           this.datos[0].data[0].potenciaP1,
           this.datos[0].data[0].potenciaP2,
           this.datos[0].data[0].potenciaP3
         ]
+        // [
+        //   'Optimizada',
+        //   this.datos[0].data[0].potenciaP1,
+        //   this.datos[0].data[0].potenciaP2,
+        //   this.datos[0].data[0].potenciaP3
+        // ]
       ],
-      margin: { top: 160 }
+      margin: { left: ml, top: mt + 60 },
+      tableWidth: 170
     });
-    html2canvas(this.imagen.nativeElement).then(canvas => {
-      doc.addImage(canvas.toDataURL(), 'JPEG', 170, 15, 20, 6);
-    });
-    setTimeout(() => {
-      const anchor2 = event.target;
-      const element2 = document.getElementsByTagName('canvas')[1];
-      anchor2.href = element2.toDataURL();
 
-      doc.addPage('a4');
-      doc.addImage(anchor2.href, 'PNG', 15, 40, 180, 100);
-      doc.save('a4.pdf');
-      console.log('gola');
-    }, 5000);
-    // anchor.download = 'test.png';
+    doc.text('Título gráfica', ml + 85, mt + 90, null, null, 'center');
+    // Primera gráfica
+    const anchor = event.target;
+    const element = document.getElementsByTagName('canvas')[0];
+    anchor.href = element.toDataURL();
+    doc.addImage(anchor.href, 'PNG', ml - 10, mt + 95, 180, 100);
+
+    // logo de la empresa en la esquina superior derecha
+    await html2canvas(this.imagen.nativeElement).then(canvas => {
+      doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
+    });
+
+    const textoPrimerGrafico =
+      // tslint:disable-next-line: max-line-length
+      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?';
+    const textoCortado = doc.splitTextToSize(textoPrimerGrafico, 150);
+    doc.text(textoCortado, ml, mt + 210, { maxWidth: 170, align: 'justify' });
+
+    // Añadimos una segunda página
+    doc.addPage('a4');
+
+    // logo de la empresa en la esquina superior derecha
+    await html2canvas(this.imagen.nativeElement).then(canvas => {
+      doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
+    });
+
+    doc.text(
+      hoy.getDate() + '/' + hoy.getMonth() + '/' + hoy.getFullYear(),
+      ml,
+      mt
+    );
+
+    doc.text('Título gráfica', ml + 85, mt + 20, null, null, 'center');
+    // Segunda gráfica
+    const anchor2 = event.target;
+    const element2 = document.getElementsByTagName('canvas')[1];
+    anchor2.href = element2.toDataURL();
+    doc.addImage(anchor2.href, 'PNG', ml - 10, mt + 30, 180, 100);
+
+    const totalPagadoIE = this.totalPagado * 1.05;
+    const totalAhorradoIE = this.totalAhorrado * 1.05;
+    const totalPagadoIVA = totalPagadoIE * 1.21;
+    const totalAhorradoIVA = totalAhorradoIE * 1.21;
+
+    doc.autoTable({
+      head: [['', 'Precio', 'Precio IE', 'Precio IVA']],
+      body: [
+        [
+          'Actual',
+          this.totalPagado.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          totalPagadoIE.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          totalPagadoIVA.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          })
+        ],
+        [
+          'Optimizado',
+          this.totalAhorrado.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          totalAhorradoIE.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          totalAhorradoIVA.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          })
+        ],
+        [
+          'Diferencia',
+          (this.totalPagado - this.totalAhorrado).toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          (totalPagadoIE - totalAhorradoIE).toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          (totalPagadoIVA - totalAhorradoIVA).toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR',
+            maximumFractionDigits: 2
+          })
+        ]
+      ],
+      margin: { left: ml, top: mt + 140 },
+      tableWidth: 170
+    });
+
+    const textoModoPago =
+      // tslint:disable-next-line: max-line-length
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+    const textoCortado2 = doc.splitTextToSize(textoModoPago, 150);
+    doc.text(textoCortado2, ml, mt + 190, { maxWidth: 170, align: 'justify' });
+
+    const textoExencion =
+      // tslint:disable-next-line: max-line-length
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+    const textoCortado3 = doc.splitTextToSize(textoExencion, 150);
+    doc.text(textoCortado3, ml, mt + 220, { maxWidth: 170, align: 'justify' });
+
+    // Nombre del archivo
+    doc.save(`calculo-${this.formulario.propietario}.pdf`);
   }
 }

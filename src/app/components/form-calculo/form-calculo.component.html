@@ -12,8 +12,7 @@
                 </div>
                 <div class="col-4">
                     <label for="tarifa">Tarifa</label>
-
-                    <select [(ngModel)]="tarifa"
+                    <select [(ngModel)]="tarifa" (change)="cambioTarifa()"
                         [ngClass]="{'is-invalid': form.submitted && form.controls['tarifa'].errors}" required
                         name="tarifa" class="form-control">
                         <option *ngFor="let tarifa of tarifas" [value]="tarifa.tarifa">{{tarifa.tarifa}}</option>
@@ -24,114 +23,370 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="row">
 
-                <div class="col-4">
-                    <label for="p1">P1</label>
-                    <div class="input-group">
-                        <input [(ngModel)]="p1"
-                            [ngClass]="{'is-invalid': form.submitted && form.controls['p1'] && form.controls['p1'].errors}"
-                            number required type="number" class="form-control" id="p1" name="p1" placeholder="(P1)">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">ekW</div>
-                        </div>
-                        <div *ngIf="form.submitted && form.controls['p1'] && form.controls['p1'].errors"
-                            class="invalid-feedback">
-                            Este campo es obligatorio
+        <br>
+
+        <div class="card border-primary">
+
+            <div class="form-group card-body">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="p1Calculos">P1 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p1"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p1'] && form.controls['p1'].errors}"
+                                number required type="number" class="form-control" id="p1" name="p1" placeholder="(P1)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p1'] && form.controls['p1'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
                         </div>
                     </div>
+
+                    <div class="col-4">
+                        <label for="p2">P2 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p2"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p2'] && form.controls['p2'].errors}"
+                                number required type="number" class="form-control" id="p2" name="p2" placeholder="(P2)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p2'] && form.controls['p2'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="p3">P3 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p3"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p3'] && form.controls['p3'].errors}"
+                                number required type="number" class="form-control" id="p3" name="p3" placeholder="(P3)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p3'] && form.controls['p3'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
 
-                <div class="col-4">
-                    <label for="p2">P2</label>
-                    <div class="input-group">
-                        <input [(ngModel)]="p2"
-                            [ngClass]="{'is-invalid': form.submitted && form.controls['p2'] && form.controls['p2'].errors}"
-                            number required type="number" class="form-control" id="p2" name="p2" placeholder="(P2)">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">ekW</div>
-                        </div>
-                        <div *ngIf="form.submitted && form.controls['p2'] && form.controls['p2'].errors"
-                            class="invalid-feedback">
-                            Este campo es obligatorio
+            <div class="form-group card-body"
+                *ngIf="tarifa == '6.1A' || tarifa == '6.2' || tarifa == '6.3' || tarifa == '6.4' || tarifa == '6.5'">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="p4">P4 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p4"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p4'] && form.controls['p4'].errors}"
+                                number required type="number" class="form-control" id="p4" name="p4" placeholder="(P4)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p4'] && form.controls['p4'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
                         </div>
                     </div>
+
+                    <div class="col-4">
+                        <label for="p5">P5 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p5"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p5'] && form.controls['p5'].errors}"
+                                number required type="number" class="form-control" id="p5" name="p5" placeholder="(P5)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p5'] && form.controls['p5'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="p6">P6 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p6"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p6'] && form.controls['p6'].errors}"
+                                number required type="number" class="form-control" id="p6" name="p6" placeholder="(P6)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p6'] && form.controls['p6'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
 
-                <div class="col-4">
-                    <label for="p3">P3</label>
-                    <div class="input-group">
-                        <input [(ngModel)]="p3"
-                            [ngClass]="{'is-invalid': form.submitted && form.controls['p3'] && form.controls['p3'].errors}"
-                            number required type="number" class="form-control" id="p3" name="p3" placeholder="(P3)">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">ekW</div>
-                        </div>
-                        <div *ngIf="form.submitted && form.controls['p3'] && form.controls['p3'].errors"
-                            class="invalid-feedback">
-                            Este campo es obligatorio
+        </div>
+
+        <div *ngIf="tarifa == '6.1A' || tarifa == '6.2' || tarifa == '6.3' || tarifa == '6.4' || tarifa == '6.5'">
+
+            <br><br>
+
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                    <input [(ngModel)]="calculoAutomatico" value="si" type="radio" class="form-check-input"
+                        name="tipoCalculo">Automático
+                </label>
+            </div>
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                    <input [(ngModel)]="calculoAutomatico" value="no" type="radio" class="form-check-input"
+                        name="tipoCalculo">Manual
+                </label>
+            </div>
+
+            <br><br>
+
+        </div>
+
+        <div class="card border-success" *ngIf="calculoAutomatico == 'no'">
+
+            <div class="form-group card-body">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="p1Calculos">P1 Tarifa Calculada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p1Calculos"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p1Calculos'] && form.controls['p1Calculos'].errors}"
+                                number required type="number" class="form-control" id="p1Calculos" name="p1Calculos"
+                                placeholder="(P1)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p1Calculos'] && form.controls['p1Calculos'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
                         </div>
                     </div>
+
+                    <div class="col-4">
+                        <label for="p2Calculos">P2 Tarifa Calculada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p2Calculos"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p2Calculos'] && form.controls['p2Calculos'].errors}"
+                                number required type="number" class="form-control" id="p2Calculos" name="p2Calculos"
+                                placeholder="(P2)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p2Calculos'] && form.controls['p2Calculos'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="p3Calculos">P3 Tarifa Calculada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p3Calculos"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p3Calculos'] && form.controls['p3Calculos'].errors}"
+                                number required type="number" class="form-control" id="p3Calculos" name="p3Calculos"
+                                placeholder="(P3)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p3Calculos'] && form.controls['p3Calculos'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group card-body"
+                *ngIf="tarifa == '6.1A' || tarifa == '6.2' || tarifa == '6.3' || tarifa == '6.4' || tarifa == '6.5'">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="p4Calculos">P4 Tarifa Calculada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p4Calculos"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p4Calculos'] && form.controls['p4Calculos'].errors}"
+                                number required type="number" class="form-control" id="p4Calculos" name="p4Calculos"
+                                placeholder="(P4)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p4Calculos'] && form.controls['p4Calculos'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="p5Calculos">P5 Tarifa Calculada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p5Calculos"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p5Calculos'] && form.controls['p5Calculos'].errors}"
+                                number required type="number" class="form-control" id="p5Calculos" name="p5Calculos"
+                                placeholder="(P5)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p5Calculos'] && form.controls['p5Calculos'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="p6Calculos">P6 Tarifa Calculada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="p6Calculos"
+                                [ngClass]="{'is-invalid': form.submitted && form.controls['p6Calculos'] && form.controls['p6Calculos'].errors}"
+                                number required type="number" class="form-control" id="p6Calculos" name="p6Calculos"
+                                placeholder="(P6)">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">ekW</div>
+                            </div>
+                            <div *ngIf="form.submitted && form.controls['p6Calculos'] && form.controls['p6Calculos'].errors"
+                                class="invalid-feedback">
+                                Este campo es obligatorio
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <div class="card border-danger">
+
+            <div class="form-group card-body">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="precioP1">Precio P1 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP1" number type="number" class="form-control" id="precioP1"
+                                name="precioP1" placeholder="Precio P1">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioP2">Precio P2 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP2" number type="number" class="form-control" id="precioP2"
+                                name="precioP2" placeholder="Precio P2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioP3">Precio P3 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP3" number type="number" class="form-control" id="precioP3"
+                                name="precioP3" placeholder="Precio P3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="row">
+            <div class="form-group card-body"
+                *ngIf="tarifa == '6.1A' || tarifa == '6.2' || tarifa == '6.3' || tarifa == '6.4' || tarifa == '6.5'">
+                <div class="row">
 
-                <div class="col-4">
-                    <label for="precioP1">Precio P1</label>
-                    <div class="input-group">
-                        <input [(ngModel)]="precioP1" number type="number" class="form-control" id="precioP1"
-                            name="precioP1" placeholder="Precio P1">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">€</div>
+                    <div class="col-4">
+                        <label for="precioP4">Precio P4 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP4" number type="number" class="form-control" id="precioP4"
+                                name="precioP4" placeholder="Precio P4">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-4">
-                    <label for="precioP2">Precio P2</label>
-                    <div class="input-group">
-                        <input [(ngModel)]="precioP2" number type="number" class="form-control" id="precioP2"
-                            name="precioP2" placeholder="Precio P2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">€</div>
+                    <div class="col-4">
+                        <label for="precioP5">Precio P5 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP5" number type="number" class="form-control" id="precioP5"
+                                name="precioP5" placeholder="Precio P5">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-4">
-                    <label for="precioP3">Precio P3</label>
-                    <div class="input-group">
-                        <input [(ngModel)]="precioP3" number type="number" class="form-control" id="precioP3"
-                            name="precioP3" placeholder="Precio P3">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">€</div>
+                    <div class="col-4">
+                        <label for="precioP6">Precio P6 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP6" number type="number" class="form-control" id="precioP6"
+                                name="precioP6" placeholder="Precio P6">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
             </div>
 
         </div>
+        <br><br>
 
-        <div class="form-group">
-            <div class="row">
-                <div class="col-4">
-                    <label for="impuestoElectrico">Precio P1</label>
-                    <div class="input-group">
-                        <input [(ngModel)]="impuestoElectrico" number type="number" class="form-control"
-                            id="impuestoElectrico" name="impuestoElectrico" placeholder="Impuesto Eléctrico">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">%</div>
+        <div class="card border-info">
+
+            <div class="form-group card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <label for="impuestoElectrico">Impuesto eléctrico</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="impuestoElectrico" number type="number" class="form-control"
+                                id="impuestoElectrico" name="impuestoElectrico" placeholder="Impuesto Eléctrico">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">%</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+
+        <br><br>
 
         <div class="form-group">
             <div class="row">
@@ -170,8 +425,8 @@
             </div>
         </div>
 
-
         <br>
+
         <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Calcular</button>
 
     </form>

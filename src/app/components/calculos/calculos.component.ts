@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { CalculosService } from '../../services/calculos.service';
-import { HttpResponse } from '@angular/common/http';
-import { ChartDataSets } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartYAxe } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { Router } from '@angular/router';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import * as jsPdf from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -34,6 +33,32 @@ export class CalculosComponent implements OnInit {
     { default: false, valor: 'scatter', nombre: 'Dispersión' }
   ];
 
+  public optionsGraficoTotal: ChartOptions = {
+    responsive: true,
+    showLines: false,
+    legend: {
+      labels: { fontColor: 'black' }
+    },
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      xAxes: [
+        {
+          ticks: { fontColor: 'black', beginAtZero: false },
+          gridLines: { color: 'rgba(0,0,0,0.1)' }
+        }
+      ],
+      yAxes: []
+    },
+    plugins: {
+      datalabels: {
+        // Altura
+        anchor: 'end',
+        align: 'end',
+        color: 'black'
+      }
+    }
+  };
+
   datos: any;
   costePagado: number[] = [];
   labels: Label[] = [];
@@ -43,9 +68,12 @@ export class CalculosComponent implements OnInit {
   totalPagado: number = 0;
   totalAhorrado: number = 0;
   totalCalculadoMax: number = 0;
+  excesosPagado: number = 0;
+  excesosAhorrado: number = 0;
   labelsTotal: Label[] = ['Total'];
   calculoTotal: ChartDataSets[] = [];
   costeTotal: ChartDataSets[] = [];
+  excesosTotal: ChartDataSets[] = [];
   costeTotal2: ChartDataSets[] = [];
   calculoMaxTotal: ChartDataSets[] = [];
 
@@ -61,15 +89,15 @@ export class CalculosComponent implements OnInit {
 
     this.calculoServ
       .getCalculo(this.formulario)
-      .pipe(
-        filter(value => {
-          if (value instanceof HttpResponse) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-      )
+      // .pipe(
+      //   filter(value => {
+      //     if (value instanceof HttpResponse) {
+      //       return true;
+      //     } else {
+      //       return false;
+      //     }
+      //   })
+      // )
       .pipe(
         map((data: any) => {
           console.log('Datos antes', data);
@@ -104,38 +132,63 @@ export class CalculosComponent implements OnInit {
                   ' - ' +
                   this.construirLabel(data.results[0].data[i].fechaFin)
               );
-              this.costeAhorrado.push(
-                Math.floor(data.results[0].data[i].coste)
-              );
-              this.totalAhorrado += Math.floor(data.results[0].data[i].coste);
+              if (!this.esTarifa6x()) {
+                this.costeAhorrado.push(data.results[0].data[i].coste);
+                this.totalAhorrado += data.results[0].data[i].coste;
+              } else {
+                this.costeAhorrado.push(data.results[0].data[i].costeSinExc);
+                this.totalAhorrado += data.results[0].data[i].costeSinExc;
+                this.excesosAhorrado += data.results[0].data[i].excesos;
+              }
             }
           }
           if (data.results.length >= 2) {
             for (let i = data.results[1].data.length - 1; i >= 0; i--) {
-              this.costePagado.push(Math.round(data.results[1].data[i].coste));
-              this.totalPagado += Math.round(data.results[1].data[i].coste);
+              if (!this.esTarifa6x()) {
+                this.costePagado.push(data.results[1].data[i].coste);
+                this.totalPagado += data.results[1].data[i].coste;
+              } else {
+                this.costePagado.push(data.results[1].data[i].costeSinExc);
+                this.totalPagado += data.results[1].data[i].costeSinExc;
+                this.excesosPagado += data.results[1].data[i].excesos;
+              }
             }
           }
 
           if (data.results.length >= 3) {
             for (let i = data.results[2].data.length - 1; i >= 0; i--) {
-              this.costeCalculadoMax.push(
-                Math.round(data.results[2].data[i].coste)
-              );
-              this.totalCalculadoMax += Math.round(
-                data.results[2].data[i].coste
-              );
+              this.costeCalculadoMax.push(data.results[2].data[i].coste);
+              this.totalCalculadoMax += data.results[2].data[i].coste;
             }
           }
 
           this.costeTotal = [
             { data: this.costePagado, label: 'Pagado' },
-            { data: this.costeAhorrado, label: 'Ahorrado' }
+            { data: this.costeAhorrado, label: 'Calculado' }
           ];
 
           this.calculoTotal = [
             { data: [this.totalPagado], label: 'Total Pagado' },
-            { data: [this.totalAhorrado], label: 'Total Ahorrado' }
+            { data: [this.totalAhorrado], label: 'Total Calculado' }
+          ];
+
+          const confEjeY: any = [
+            {
+              ticks: {
+                fontColor: 'black',
+                min:
+                  Math.round(
+                    Math.min(this.totalPagado, this.totalAhorrado) / 2000
+                  ) * 1000
+              },
+              gridLines: { color: 'rgba(0,0,0,0.1)' }
+            }
+          ];
+          this.optionsGraficoTotal.scales.yAxes.push(confEjeY);
+
+          this.excesosTotal = [
+            { data: [this.excesosPagado], label: 'Excesos Pagados' },
+            { data: [this.excesosAhorrado], label: 'Excesos Calculados' }
           ];
 
           if (this.costeCalculadoMax.length > 1) {
@@ -154,7 +207,9 @@ export class CalculosComponent implements OnInit {
         },
         err => {
           Swal.close();
-          const error = JSON.parse(err.error);
+          console.log(err);
+          const error = err;
+          // const error = JSON.parse(err.error);
           let mensaje = '';
           if (error.message) {
             mensaje = error.message;
@@ -166,7 +221,6 @@ export class CalculosComponent implements OnInit {
               'No hemos podido calcular su factura, repita el proceso de nuevo, por favor',
             footer: mensaje
           });
-          console.log(err);
           this.router.navigate(['/home']);
         },
         () => {
@@ -245,25 +299,44 @@ export class CalculosComponent implements OnInit {
     doc.text('Potencia Actual', ml + 85, mt + 55, null, null, 'center');
 
     // Tabla de potencias
-    doc.autoTable({
-      head: [['', 'P1', 'P2', 'P3']],
-      body: [
-        [
-          'Actual',
-          this.datos[0].data[0].potenciaP1,
-          this.datos[0].data[0].potenciaP2,
-          this.datos[0].data[0].potenciaP3
-        ]
-        // [
-        //   'Optimizada',
-        //   this.datos[0].data[0].potenciaP1,
-        //   this.datos[0].data[0].potenciaP2,
-        //   this.datos[0].data[0].potenciaP3
-        // ]
-      ],
-      margin: { left: ml, top: mt + 60 },
-      tableWidth: 170
-    });
+    if (!this.esTarifa6x()) {
+      doc.autoTable({
+        head: [['', 'P1', 'P2', 'P3']],
+        body: [
+          [
+            'Actual',
+            this.datos[1].data[0].potenciaP1,
+            this.datos[1].data[0].potenciaP2,
+            this.datos[1].data[0].potenciaP3
+          ]
+          // [
+          //   'Optimizada',
+          //   this.datos[0].data[0].potenciaP1,
+          //   this.datos[0].data[0].potenciaP2,
+          //   this.datos[0].data[0].potenciaP3
+          // ]
+        ],
+        margin: { left: ml, top: mt + 60 },
+        tableWidth: 170
+      });
+    } else {
+      doc.autoTable({
+        head: [['', 'P1', 'P2', 'P3', 'P4', 'P5', 'P6']],
+        body: [
+          [
+            'Actual',
+            this.datos[1].data[0].potenciaP1,
+            this.datos[1].data[0].potenciaP2,
+            this.datos[1].data[0].potenciaP3,
+            this.datos[1].data[0].potenciaP4,
+            this.datos[1].data[0].potenciaP5,
+            this.datos[1].data[0].potenciaP6
+          ]
+        ],
+        margin: { left: ml, top: mt + 60 },
+        tableWidth: 170
+      });
+    }
 
     doc.text('Título gráfica', ml + 85, mt + 90, null, null, 'center');
     // Primera gráfica
@@ -375,7 +448,56 @@ export class CalculosComponent implements OnInit {
     const textoCortado3 = doc.splitTextToSize(textoExencion, 150);
     doc.text(textoCortado3, ml, mt + 220, { maxWidth: 170, align: 'justify' });
 
+    if (this.esTarifa6x()) {
+      // Añadimos una tercera página
+      doc.addPage('a4');
+      // logo de la empresa en la esquina superior derecha
+      await html2canvas(this.imagen.nativeElement).then(canvas => {
+        doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
+      });
+
+      doc.text(
+        hoy.getDate() + '/' + hoy.getMonth() + '/' + hoy.getFullYear(),
+        ml,
+        mt
+      );
+
+      doc.text('Título gráfica', ml + 85, mt + 20, null, null, 'center');
+      // Tercera gráfica
+      const anchor3 = event.target;
+      const element3 = document.getElementsByTagName('canvas')[2];
+      anchor3.href = element3.toDataURL();
+      doc.addImage(anchor3.href, 'PNG', ml - 10, mt + 30, 180, 100);
+
+      doc.autoTable({
+        head: [['Excesos Pagados', 'Excesos Calculados', 'Diferencia']],
+        body: [
+          [
+            this.excesosPagado,
+            this.excesosAhorrado,
+            this.excesosPagado - this.excesosAhorrado
+          ]
+        ],
+        margin: { left: ml, top: mt + 140 },
+        tableWidth: 170
+      });
+    }
+
     // Nombre del archivo
     doc.save(`calculo-${this.formulario.propietario}.pdf`);
+  }
+
+  esTarifa6x() {
+    if (
+      this.formulario.tarifa === '6.1A' ||
+      this.formulario.tarifa === '6.2' ||
+      this.formulario.tarifa === '6.3' ||
+      this.formulario.tarifa === '6.4' ||
+      this.formulario.tarifa === '6.5'
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -9,7 +9,7 @@ import { Label } from 'ng2-charts';
   styles: []
 })
 export class GraficoComponent implements OnInit {
-  public barChartOptions: ChartOptions = {
+  @Input() barChartOptions: ChartOptions = {
     responsive: true,
     showLines: false,
     legend: {
@@ -19,13 +19,13 @@ export class GraficoComponent implements OnInit {
     scales: {
       xAxes: [
         {
-          ticks: { fontColor: 'black', beginAtZero: true },
+          ticks: { fontColor: 'black', beginAtZero: false },
           gridLines: { color: 'rgba(0,0,0,0.1)' }
         }
       ],
       yAxes: [
         {
-          ticks: { fontColor: 'black', beginAtZero: true },
+          ticks: { fontColor: 'black', beginAtZero: false },
           gridLines: { color: 'rgba(0,0,0,0.1)' }
         }
       ]

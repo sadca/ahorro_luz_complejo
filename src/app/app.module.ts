@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +17,7 @@ import { NgDropFilesDirective } from './directives/ng-drop-files.directive';
 // Para poner sistema local de ESPAÑA
 import es from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+import { InterceptorService } from './interceptors/interceptor.service';
 registerLocaleData(es);
 
 @NgModule({
@@ -36,7 +37,11 @@ registerLocaleData(es);
     ChartsModule,
     FormsModule
   ],
-  providers: [CalculosService, { provide: LOCALE_ID, useValue: 'es' }],
+  providers: [
+    CalculosService,
+    { provide: LOCALE_ID, useValue: 'es' },
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

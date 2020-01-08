@@ -18,7 +18,8 @@ export class InterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return next.handle(req).pipe(timeout(300000));
+    return next.handle(req).pipe(timeout(3000000));
+    // return next.handle(req);
     // 30000 (30s) would be the global default for example
   }
 }

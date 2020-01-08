@@ -59,23 +59,47 @@ export class CalculosComponent implements OnInit {
     }
   };
 
+  public optionsGraficoPeriodos: ChartOptions = {
+    responsive: true,
+    showLines: false,
+    legend: {
+      labels: { fontColor: 'black' }
+    },
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      xAxes: [
+        {
+          ticks: { fontColor: 'black', beginAtZero: false },
+          gridLines: { color: 'rgba(0,0,0,0.1)' }
+        }
+      ],
+      yAxes: []
+    },
+    plugins: {
+      datalabels: {
+        // Altura
+        anchor: 'end',
+        align: 'end',
+        color: 'black'
+      }
+    }
+  };
+
   datos: any;
-  costePagado: number[] = [];
   labels: Label[] = [];
-  costeAhorrado: number[] = [];
-  costeCalculadoMax: number[] = [];
+  labelsTotal: Label[] = ['Total'];
+
+  costePagado: number[] = [];
+  costeOptimizado: number[] = [];
 
   totalPagado: number = 0;
-  totalAhorrado: number = 0;
-  totalCalculadoMax: number = 0;
-  excesosPagado: number = 0;
-  excesosAhorrado: number = 0;
-  labelsTotal: Label[] = ['Total'];
+  totalOptimizado: number = 0;
+
   calculoTotal: ChartDataSets[] = [];
   costeTotal: ChartDataSets[] = [];
-  excesosTotal: ChartDataSets[] = [];
-  costeTotal2: ChartDataSets[] = [];
-  calculoMaxTotal: ChartDataSets[] = [];
+
+  constIE: number = 1.05113;
+  iva: number = 1.21;
 
   constructor(private calculoServ: CalculosService, private router: Router) {}
 
@@ -133,43 +157,74 @@ export class CalculosComponent implements OnInit {
                   this.construirLabel(data.results[0].data[i].fechaFin)
               );
               if (!this.esTarifa6x()) {
-                this.costeAhorrado.push(data.results[0].data[i].coste);
-                this.totalAhorrado += data.results[0].data[i].coste;
+                this.costeOptimizado.push(
+                  this.redondear(data.results[0].data[i].coste)
+                );
+                this.totalOptimizado += data.results[0].data[i].coste;
               } else {
-                this.costeAhorrado.push(data.results[0].data[i].costeSinExc);
-                this.totalAhorrado += data.results[0].data[i].costeSinExc;
-                this.excesosAhorrado += data.results[0].data[i].excesos;
+                this.costeOptimizado.push(
+                  this.redondear(
+                    data.results[0].data[i].costeSinExc +
+                      data.results[0].data[i].excesos
+                  )
+                );
+                this.totalOptimizado +=
+                  data.results[0].data[i].costeSinExc +
+                  data.results[0].data[i].excesos;
               }
             }
           }
           if (data.results.length >= 2) {
             for (let i = data.results[1].data.length - 1; i >= 0; i--) {
               if (!this.esTarifa6x()) {
-                this.costePagado.push(data.results[1].data[i].coste);
+                this.costePagado.push(
+                  this.aplicarDescuento(data.results[1].data[i].coste)
+                );
                 this.totalPagado += data.results[1].data[i].coste;
               } else {
-                this.costePagado.push(data.results[1].data[i].costeSinExc);
-                this.totalPagado += data.results[1].data[i].costeSinExc;
-                this.excesosPagado += data.results[1].data[i].excesos;
+                this.costePagado.push(
+                  this.aplicarDescuento(
+                    data.results[1].data[i].costeSinExc +
+                      data.results[1].data[i].excesos
+                  )
+                );
+                this.totalPagado +=
+                  data.results[1].data[i].costeSinExc +
+                  data.results[1].data[i].excesos;
               }
-            }
-          }
-
-          if (data.results.length >= 3) {
-            for (let i = data.results[2].data.length - 1; i >= 0; i--) {
-              this.costeCalculadoMax.push(data.results[2].data[i].coste);
-              this.totalCalculadoMax += data.results[2].data[i].coste;
             }
           }
 
           this.costeTotal = [
             { data: this.costePagado, label: 'Pagado' },
-            { data: this.costeAhorrado, label: 'Calculado' }
+            { data: this.costeOptimizado, label: 'Optimizado' }
           ];
 
+          const confEjeYPeriodos: any = [
+            {
+              ticks: {
+                fontColor: 'black',
+                min:
+                  Math.round(Math.min.apply(null, this.costeOptimizado) / 2000) *
+                  1000
+              },
+              gridLines: { color: 'rgba(0,0,0,0.1)' }
+            }
+          ];
+          this.optionsGraficoPeriodos.scales.yAxes.push(confEjeYPeriodos);
+
+          this.totalPagado = this.aplicarDescuento(this.totalPagado);
+          this.totalOptimizado = this.redondear(this.totalOptimizado);
+
           this.calculoTotal = [
-            { data: [this.totalPagado], label: 'Total Pagado' },
-            { data: [this.totalAhorrado], label: 'Total Calculado' }
+            {
+              data: [this.totalPagado],
+              label: 'Total Pagado'
+            },
+            {
+              data: [this.totalOptimizado],
+              label: 'Total Optimizado'
+            }
           ];
 
           const confEjeY: any = [
@@ -178,30 +233,13 @@ export class CalculosComponent implements OnInit {
                 fontColor: 'black',
                 min:
                   Math.round(
-                    Math.min(this.totalPagado, this.totalAhorrado) / 2000
+                    Math.min(this.totalPagado, this.totalOptimizado) / 2000
                   ) * 1000
               },
               gridLines: { color: 'rgba(0,0,0,0.1)' }
             }
           ];
           this.optionsGraficoTotal.scales.yAxes.push(confEjeY);
-
-          this.excesosTotal = [
-            { data: [this.excesosPagado], label: 'Excesos Pagados' },
-            { data: [this.excesosAhorrado], label: 'Excesos Calculados' }
-          ];
-
-          if (this.costeCalculadoMax.length > 1) {
-            this.costeTotal2 = [
-              { data: this.costePagado, label: 'Pagado' },
-              { data: this.costeCalculadoMax, label: 'Calculado Max' }
-            ];
-          }
-
-          this.calculoMaxTotal = [
-            { data: [this.totalPagado], label: 'Total Pagado' },
-            { data: [this.totalCalculadoMax], label: 'Total Calculado Max' }
-          ];
 
           Swal.close();
         },
@@ -263,7 +301,7 @@ export class CalculosComponent implements OnInit {
     doc.setFontSize(10);
     const hoy = new Date();
     doc.text(
-      hoy.getDate() + '/' + hoy.getMonth() + '/' + hoy.getFullYear(),
+      hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear(),
       ml,
       mt
     );
@@ -338,7 +376,14 @@ export class CalculosComponent implements OnInit {
       });
     }
 
-    doc.text('Título gráfica', ml + 85, mt + 90, null, null, 'center');
+    doc.text(
+      'Coste del termino de potencia por factura',
+      ml + 85,
+      mt + 90,
+      null,
+      null,
+      'center'
+    );
     // Primera gráfica
     const anchor = event.target;
     const element = document.getElementsByTagName('canvas')[0];
@@ -350,9 +395,17 @@ export class CalculosComponent implements OnInit {
       doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
     });
 
+    // const textoTabla =
+    //   // tslint:disable-next-line: max-line-length
+    //   'El gráfico anterior, representa el coste de cada una de las facturas del último año móvil.
+    // En color rosa, representa los costes pagados con las potencias actuales del cliente. En color azul,
+    // representa los costes que se hubiesen pagado con las potencias recomendadas.';
+    // const textoTablaCortado = doc.splitTextToSize(textoTabla, 150);
+    // doc.text(textoTablaCortado, ml, mt + 210, { maxWidth: 170, align: 'justify' });
+
     const textoPrimerGrafico =
       // tslint:disable-next-line: max-line-length
-      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?';
+      'En la tabla superior, están recogidas las potencias contratadas por el cliente. SADCA recomienda modificar estas potencias para conseguir un ahorro en la factura de la luz.\nEl gráfico anterior representa el coste de la potencia de cada una de las facturas del último año móvil. En color rosa se representan los costes a los que ha tenido que hacer frente el cliente por el termino de potencia. En color azul se representan los costes que se hubiesen pagado con las potencias recomendadas.';
     const textoCortado = doc.splitTextToSize(textoPrimerGrafico, 150);
     doc.text(textoCortado, ml, mt + 210, { maxWidth: 170, align: 'justify' });
 
@@ -365,22 +418,32 @@ export class CalculosComponent implements OnInit {
     });
 
     doc.text(
-      hoy.getDate() + '/' + hoy.getMonth() + '/' + hoy.getFullYear(),
+      hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear(),
       ml,
       mt
     );
 
-    doc.text('Título gráfica', ml + 85, mt + 20, null, null, 'center');
+    doc.text(
+      'Coste del termino de potencia anual',
+      ml + 85,
+      mt + 20,
+      null,
+      null,
+      'center'
+    );
     // Segunda gráfica
     const anchor2 = event.target;
     const element2 = document.getElementsByTagName('canvas')[1];
     anchor2.href = element2.toDataURL();
     doc.addImage(anchor2.href, 'PNG', ml - 10, mt + 30, 180, 100);
 
-    const totalPagadoIE = this.totalPagado * 1.05;
-    const totalAhorradoIE = this.totalAhorrado * 1.05;
-    const totalPagadoIVA = totalPagadoIE * 1.21;
-    const totalAhorradoIVA = totalAhorradoIE * 1.21;
+    const impuestoElectrico =
+      (this.constIE * this.formulario.impuestoElectrico) / 100;
+
+    const totalPagadoIE = this.totalPagado * impuestoElectrico;
+    const totalAhorradoIE = this.totalOptimizado * impuestoElectrico;
+    const totalPagadoIVA = totalPagadoIE * this.iva;
+    const totalAhorradoIVA = totalAhorradoIE * this.iva;
 
     doc.autoTable({
       head: [['', 'Precio', 'Precio IE', 'Precio IVA']],
@@ -402,7 +465,7 @@ export class CalculosComponent implements OnInit {
         ],
         [
           'Optimizado',
-          this.totalAhorrado.toLocaleString('es-ES', {
+          this.totalOptimizado.toLocaleString('es-ES', {
             style: 'currency',
             currency: 'EUR'
           }),
@@ -417,7 +480,7 @@ export class CalculosComponent implements OnInit {
         ],
         [
           'Diferencia',
-          (this.totalPagado - this.totalAhorrado).toLocaleString('es-ES', {
+          (this.totalPagado - this.totalOptimizado).toLocaleString('es-ES', {
             style: 'currency',
             currency: 'EUR'
           }),
@@ -438,50 +501,55 @@ export class CalculosComponent implements OnInit {
 
     const textoModoPago =
       // tslint:disable-next-line: max-line-length
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+      'Los cálculos realizados en este informe, han tomado como base el consumo del cliente en el último año. Si dicho cliente en los meses posteriores cambia su forma de consumo, SADCA no se compromete a que se alcance el ahorro estimado.';
     const textoCortado2 = doc.splitTextToSize(textoModoPago, 150);
     doc.text(textoCortado2, ml, mt + 190, { maxWidth: 170, align: 'justify' });
 
-    const textoExencion =
-      // tslint:disable-next-line: max-line-length
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-    const textoCortado3 = doc.splitTextToSize(textoExencion, 150);
-    doc.text(textoCortado3, ml, mt + 220, { maxWidth: 170, align: 'justify' });
+    // const textoExencion =
+    //   // tslint:disable-next-line: max-line-length
+    //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    // tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    // quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    // consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    // cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    // non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+    // const textoCortado3 = doc.splitTextToSize(textoExencion, 150);
+    // doc.text(textoCortado3, ml, mt + 220, { maxWidth: 170, align: 'justify' });
 
-    if (this.esTarifa6x()) {
-      // Añadimos una tercera página
-      doc.addPage('a4');
-      // logo de la empresa en la esquina superior derecha
-      await html2canvas(this.imagen.nativeElement).then(canvas => {
-        doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
-      });
+    // if (this.esTarifa6x()) {
+    //   // Añadimos una tercera página
+    //   doc.addPage('a4');
+    //   // logo de la empresa en la esquina superior derecha
+    //   await html2canvas(this.imagen.nativeElement).then(canvas => {
+    //     doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
+    //   });
 
-      doc.text(
-        hoy.getDate() + '/' + hoy.getMonth() + '/' + hoy.getFullYear(),
-        ml,
-        mt
-      );
+    //   doc.text(
+    //     hoy.getDate() + '/' + hoy.getMonth() + '/' + hoy.getFullYear(),
+    //     ml,
+    //     mt
+    //   );
 
-      doc.text('Título gráfica', ml + 85, mt + 20, null, null, 'center');
-      // Tercera gráfica
-      const anchor3 = event.target;
-      const element3 = document.getElementsByTagName('canvas')[2];
-      anchor3.href = element3.toDataURL();
-      doc.addImage(anchor3.href, 'PNG', ml - 10, mt + 30, 180, 100);
+    //   doc.text('Título gráfica', ml + 85, mt + 20, null, null, 'center');
+    //   // Tercera gráfica
+    //   const anchor3 = event.target;
+    //   const element3 = document.getElementsByTagName('canvas')[2];
+    //   anchor3.href = element3.toDataURL();
+    //   doc.addImage(anchor3.href, 'PNG', ml - 10, mt + 30, 180, 100);
 
-      doc.autoTable({
-        head: [['Excesos Pagados', 'Excesos Calculados', 'Diferencia']],
-        body: [
-          [
-            this.excesosPagado,
-            this.excesosAhorrado,
-            this.excesosPagado - this.excesosAhorrado
-          ]
-        ],
-        margin: { left: ml, top: mt + 140 },
-        tableWidth: 170
-      });
-    }
+    //   doc.autoTable({
+    //     head: [['Excesos Pagados', 'Excesos Calculados', 'Diferencia']],
+    //     body: [
+    //       [
+    //         this.excesosPagado,
+    //         this.excesosAhorrado,
+    //         this.excesosPagado - this.excesosAhorrado
+    //       ]
+    //     ],
+    //     margin: { left: ml, top: mt + 140 },
+    //     tableWidth: 170
+    //   });
+    // }
 
     // Nombre del archivo
     doc.save(`calculo-${this.formulario.propietario}.pdf`);
@@ -499,5 +567,16 @@ export class CalculosComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  aplicarDescuento(valor: number) {
+    valor = valor - (valor * this.formulario.descuento) / 100;
+    valor = this.redondear(valor);
+    return valor;
+  }
+
+  redondear(valor: number) {
+    valor = Math.round(valor * 100);
+    return valor / 100;
   }
 }

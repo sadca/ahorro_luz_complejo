@@ -11,7 +11,9 @@ import Swal from 'sweetalert2';
 export class FormCalculoComponent implements OnInit {
   @Output() calculoRealizado: EventEmitter<any> = new EventEmitter();
   propietario: string;
+
   tarifa: string;
+
   calculoAutomatico: string = 'si';
 
   p1: number;
@@ -37,6 +39,8 @@ export class FormCalculoComponent implements OnInit {
 
   impuestoElectrico: number;
 
+  descuento: number;
+
   archivo: any;
   archivos: FileItem[] = [];
   estaSobreElemento = false;
@@ -61,14 +65,16 @@ export class FormCalculoComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.propietario = 'ALF TECH';
-    this.p1 = 700;
-    this.p2 = 700;
-    this.p3 = 700;
-    this.p4 = 700;
-    this.p5 = 700;
-    this.p6 = 700;
-    this.tarifa = '6.1A';
+    this.propietario = 'Invesvil S.L';
+    this.p1 = 45;
+    this.p2 = 45;
+    this.p3 = 45;
+    // this.p4 = 45;
+    // this.p5 = 45;
+    // this.p6 = 45;
+    this.tarifa = '3.0A';
+    this.impuestoElectrico = 100;
+    this.descuento = 0;
   }
 
   calcular(form: any) {
@@ -105,7 +111,8 @@ export class FormCalculoComponent implements OnInit {
       precioP5: this.precioP5,
       precioP6: this.precioP6,
       archivo: this.archivos[0],
-      impuestoElectrico: this.impuestoElectrico
+      impuestoElectrico: this.impuestoElectrico,
+      descuento: this.descuento
     };
     this.calculoRealizado.emit(datos);
   }

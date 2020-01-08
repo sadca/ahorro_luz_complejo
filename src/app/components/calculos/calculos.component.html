@@ -28,16 +28,22 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Actual</td>
+                        <td>{{datos[1].data[0].potenciaP1}}</td>
+                        <td>{{datos[1].data[0].potenciaP2}}</td>
+                        <td>{{datos[1].data[0].potenciaP3}}</td>
+                    </tr>
+                    <tr>
                         <td>Optimizada</td>
                         <td>{{datos[0].data[0].potenciaP1}}</td>
                         <td>{{datos[0].data[0].potenciaP2}}</td>
                         <td>{{datos[0].data[0].potenciaP3}}</td>
                     </tr>
                     <tr>
-                        <td>Actual</td>
-                        <td>{{datos[1].data[0].potenciaP1}}</td>
-                        <td>{{datos[1].data[0].potenciaP2}}</td>
-                        <td>{{datos[1].data[0].potenciaP3}}</td>
+                        <td>Recomendada</td>
+                        <td>{{datos[0].data[0].potRecom1}}</td>
+                        <td>{{datos[0].data[0].potRecom2}}</td>
+                        <td>{{datos[0].data[0].potRecom3}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -58,6 +64,15 @@
                 <tbody>
                     <tr>
                         <td>Actual</td>
+                        <td>{{datos[1].data[0].potenciaP1}}</td>
+                        <td>{{datos[1].data[0].potenciaP2}}</td>
+                        <td>{{datos[1].data[0].potenciaP3}}</td>
+                        <td>{{datos[1].data[0].potenciaP4}}</td>
+                        <td>{{datos[1].data[0].potenciaP5}}</td>
+                        <td>{{datos[1].data[0].potenciaP6}}</td>
+                    </tr>
+                    <tr>
+                        <td>Optimizada</td>
                         <td>{{datos[0].data[0].potenciaP1}}</td>
                         <td>{{datos[0].data[0].potenciaP2}}</td>
                         <td>{{datos[0].data[0].potenciaP3}}</td>
@@ -66,13 +81,13 @@
                         <td>{{datos[0].data[0].potenciaP6}}</td>
                     </tr>
                     <tr>
-                        <td>Optimizada</td>
-                        <td>{{datos[1].data[0].potenciaP1}}</td>
-                        <td>{{datos[1].data[0].potenciaP2}}</td>
-                        <td>{{datos[1].data[0].potenciaP3}}</td>
-                        <td>{{datos[1].data[0].potenciaP4}}</td>
-                        <td>{{datos[1].data[0].potenciaP5}}</td>
-                        <td>{{datos[1].data[0].potenciaP6}}</td>
+                        <td>Recomendada</td>
+                        <td>{{datos[0].data[0].potRecom1}}</td>
+                        <td>{{datos[0].data[0].potRecom2}}</td>
+                        <td>{{datos[0].data[0].potRecom3}}</td>
+                        <td>{{datos[0].data[0].potRecom4}}</td>
+                        <td>{{datos[0].data[0].potRecom5}}</td>
+                        <td>{{datos[0].data[0].potRecom6}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -259,106 +274,6 @@
             <option *ngFor="let tipo of tiposChart" [value]="tipo.valor" [defaultSelected]="tipo.default">
                 {{tipo.nombre}}</option>
         </select>
-        <div class="col-12" *ngIf="formulario.tarifa == '6.1A' || formulario.tarifa == '6.2' 
-            || formulario.tarifa == '6.3' || formulario.tarifa == '6.4' || formulario.tarifa == '6.5'">
-            <app-grafico *ngIf="excesosTotal.length > 1" [barChartType]="tipoGraf3.value" [barChartData]="excesosTotal"
-                [barChartLabels]="labelsTotal" [barChartOptions]="optionsGraficoTotal">
-            </app-grafico>
-            <br>
-            <a href="#" (click)="exportarGrafico($event, 2)" class="btn btn-sm btn-primary">Exportar gráfico</a>
-        </div>
     </div>
 
-    <!-- <hr class="bg-dark">
-
-    <div id="calculosMax" class="row" *ngIf="costeTotal2.length > 1">
-        <div class="col-lg-6 col-sm-12 text-center">
-            <h3 class="text-center">Pagado</h3>
-            <table id="pagadoMax" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[1].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.coste | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#pagadoMax').tableExport({type:'xlsx',bootstrap:true});">Exportar
-                tabla (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#pagadoMax').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#pagadoMax').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div>
-        <div class="col-lg-6 col-sm-12 text-center">
-            <h3 class="text-center">Calculado Max</h3>
-            <table id="calculadoMax" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[2].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.coste | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculadoMax').tableExport({type:'xlsx',bootstrap:true});">Exportar tabla (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculadoMax').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#calculadoMax').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div>
-        <select #tipoGraf3 name="tipoGraf3" class="form-control mt-5">
-            <option *ngFor="let tipo of tiposChart" [value]="tipo.valor" [defaultSelected]="tipo.default">
-                {{tipo.nombre}}</option>
-        </select>
-        <div class="col-12">
-            <app-grafico *ngIf="costeTotal2.length > 1" [barChartType]="tipoGraf3.value" [barChartData]="costeTotal2"
-                [barChartLabels]="labels">
-            </app-grafico>
-            <br>
-            <a href="#" (click)="exportarGrafico($event, 2)" class="btn btn-sm btn-primary">Exportar gráfico</a>
-        </div>
-        <br>
-        <br>
-        <select #tipoGraf4 name="tipoGraf4" class="form-control mt-5">
-            <option *ngFor="let tipo of tiposChart" [value]="tipo.valor" [defaultSelected]="tipo.default">
-                {{tipo.nombre}}</option>
-        </select>
-        <div class="col-12">
-            <app-grafico *ngIf="costeTotal2.length > 1" [barChartType]="tipoGraf4.value"
-                [barChartData]="calculoMaxTotal" [barChartLabels]="labelsTotal">
-            </app-grafico>
-            <br>
-            <a href="#" (click)="exportarGrafico($event, 3)" class="btn btn-sm btn-primary">Exportar gráfico</a>
-        </div>
-    </div> -->
 </div>
-<!-- <a href="#" (click)="exportarGraficos($event)" class="btn btn-sm btn-primary">Exportar gráficos</a> -->

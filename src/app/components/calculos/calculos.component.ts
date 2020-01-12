@@ -86,17 +86,44 @@ export class CalculosComponent implements OnInit {
   };
 
   datos: any;
-  labels: Label[] = [];
-  labelsTotal: Label[] = ['Total'];
+  labelsPotencia: Label[] = [];
+  labelsTotalPotencia: Label[] = ['Total'];
 
-  costePagado: number[] = [];
-  costeOptimizado: number[] = [];
+  costePagadoPotencia: number[] = [];
+  costeOptimizadoPotencia: number[] = [];
 
-  totalPagado: number = 0;
-  totalOptimizado: number = 0;
+  totalPagadoPotencia: number = 0;
+  totalOptimizadoPotencia: number = 0;
 
-  calculoTotal: ChartDataSets[] = [];
-  costeTotal: ChartDataSets[] = [];
+  calculoTotalPotencia: ChartDataSets[] = [];
+  costeTotalPotencia: ChartDataSets[] = [];
+
+  labelsEnergia: Label[] = [];
+  labelsTotalEnergia: Label[] = ['Total'];
+
+  costePagadoEnergiaMensual: number[] = [];
+  costePagadoEnergiaE1: number[] = [];
+  costePagadoEnergiaE2: number[] = [];
+  costePagadoEnergiaE3: number[] = [];
+  costePagadoEnergiaE4: number[] = [];
+  costePagadoEnergiaE5: number[] = [];
+  costePagadoEnergiaE6: number[] = [];
+  costeOptimizadoEnergiaMensual: number[] = [];
+  costeOptimizadoEnergiaE1: number[] = [];
+  costeOptimizadoEnergiaE2: number[] = [];
+  costeOptimizadoEnergiaE3: number[] = [];
+  costeOptimizadoEnergiaE4: number[] = [];
+  costeOptimizadoEnergiaE5: number[] = [];
+  costeOptimizadoEnergiaE6: number[] = [];
+
+  totalPagadoEnergia: number = 0;
+  totalOptimizadoEnergia: number = 0;
+
+  calculoTotalEnergia: ChartDataSets[] = [];
+  costeTotalEnergia: ChartDataSets[] = [];
+  costeTotalEnergiaE1: ChartDataSets[] = [];
+  costeTotalEnergiaE2: ChartDataSets[] = [];
+  costeTotalEnergiaE3: ChartDataSets[] = [];
 
   constIE: number = 1.05113;
   iva: number = 1.21;
@@ -151,53 +178,54 @@ export class CalculosComponent implements OnInit {
           if (data.results.length >= 1) {
             for (let i = data.results[0].data.length - 1; i >= 0; i--) {
               // data.results[0].data[i].CUPS
-              this.labels.push(
+              this.labelsPotencia.push(
                 this.construirLabel(data.results[0].data[i].fechaInicio) +
                   ' - ' +
                   this.construirLabel(data.results[0].data[i].fechaFin)
               );
               if (!this.esTarifa6x()) {
-                this.costeOptimizado.push(
+                this.costeOptimizadoPotencia.push(
                   this.redondear(data.results[0].data[i].coste)
                 );
-                this.totalOptimizado += data.results[0].data[i].coste;
+                this.totalOptimizadoPotencia += data.results[0].data[i].coste;
               } else {
-                this.costeOptimizado.push(
+                this.costeOptimizadoPotencia.push(
                   this.redondear(
                     data.results[0].data[i].costeSinExc +
                       data.results[0].data[i].excesos
                   )
                 );
-                this.totalOptimizado +=
+                this.totalOptimizadoPotencia +=
                   data.results[0].data[i].costeSinExc +
                   data.results[0].data[i].excesos;
               }
             }
           }
+
           if (data.results.length >= 2) {
             for (let i = data.results[1].data.length - 1; i >= 0; i--) {
               if (!this.esTarifa6x()) {
-                this.costePagado.push(
+                this.costePagadoPotencia.push(
                   this.aplicarDescuento(data.results[1].data[i].coste)
                 );
-                this.totalPagado += data.results[1].data[i].coste;
+                this.totalPagadoPotencia += data.results[1].data[i].coste;
               } else {
-                this.costePagado.push(
+                this.costePagadoPotencia.push(
                   this.aplicarDescuento(
                     data.results[1].data[i].costeSinExc +
                       data.results[1].data[i].excesos
                   )
                 );
-                this.totalPagado +=
+                this.totalPagadoPotencia +=
                   data.results[1].data[i].costeSinExc +
                   data.results[1].data[i].excesos;
               }
             }
           }
 
-          this.costeTotal = [
-            { data: this.costePagado, label: 'Pagado' },
-            { data: this.costeOptimizado, label: 'Optimizado' }
+          this.costeTotalPotencia = [
+            { data: this.costePagadoPotencia, label: 'Pagado' },
+            { data: this.costeOptimizadoPotencia, label: 'Optimizado' }
           ];
 
           const confEjeYPeriodos: any = [
@@ -205,24 +233,29 @@ export class CalculosComponent implements OnInit {
               ticks: {
                 fontColor: 'black',
                 min:
-                  Math.round(Math.min.apply(null, this.costeOptimizado) / 2000) *
-                  1000
+                  Math.round(
+                    Math.min.apply(null, this.costeOptimizadoPotencia) / 2000
+                  ) * 1000
               },
               gridLines: { color: 'rgba(0,0,0,0.1)' }
             }
           ];
           this.optionsGraficoPeriodos.scales.yAxes.push(confEjeYPeriodos);
 
-          this.totalPagado = this.aplicarDescuento(this.totalPagado);
-          this.totalOptimizado = this.redondear(this.totalOptimizado);
+          this.totalPagadoPotencia = this.aplicarDescuento(
+            this.totalPagadoPotencia
+          );
+          this.totalOptimizadoPotencia = this.redondear(
+            this.totalOptimizadoPotencia
+          );
 
-          this.calculoTotal = [
+          this.calculoTotalPotencia = [
             {
-              data: [this.totalPagado],
+              data: [this.totalPagadoPotencia],
               label: 'Total Pagado'
             },
             {
-              data: [this.totalOptimizado],
+              data: [this.totalOptimizadoPotencia],
               label: 'Total Optimizado'
             }
           ];
@@ -233,13 +266,106 @@ export class CalculosComponent implements OnInit {
                 fontColor: 'black',
                 min:
                   Math.round(
-                    Math.min(this.totalPagado, this.totalOptimizado) / 2000
+                    Math.min(
+                      this.totalPagadoPotencia,
+                      this.totalOptimizadoPotencia
+                    ) / 2000
                   ) * 1000
               },
               gridLines: { color: 'rgba(0,0,0,0.1)' }
             }
           ];
           this.optionsGraficoTotal.scales.yAxes.push(confEjeY);
+
+          if (data.results.length >= 3) {
+            console.log(data.results[2]);
+            for (let i = data.results[2].data.length - 1; i >= 0; i--) {
+              this.labelsEnergia.push(
+                this.construirLabel(data.results[2].data[i].fechaInicio) +
+                  ' - ' +
+                  this.construirLabel(data.results[2].data[i].fechaFin)
+              );
+
+              if (!this.esTarifa6x()) {
+                this.costeOptimizadoEnergiaE1.push(
+                  this.redondear(data.results[2].data[i].costeNuevo1)
+                );
+                this.costeOptimizadoEnergiaE2.push(
+                  this.redondear(data.results[2].data[i].costeNuevo2)
+                );
+                this.costeOptimizadoEnergiaE3.push(
+                  this.redondear(data.results[2].data[i].costeNuevo3)
+                );
+                this.costeOptimizadoEnergiaMensual.push(
+                  this.redondear(
+                    data.results[2].data[i].costeNuevo1 +
+                      data.results[2].data[i].costeNuevo2 +
+                      data.results[2].data[i].costeNuevo3
+                  )
+                );
+                this.totalOptimizadoEnergia +=
+                  data.results[2].data[i].costeNuevo1 +
+                  data.results[2].data[i].costeNuevo2 +
+                  data.results[2].data[i].costeNuevo3;
+
+                this.costePagadoEnergiaE1.push(
+                  this.redondear(data.results[2].data[i].costeActual1)
+                );
+                this.costePagadoEnergiaE2.push(
+                  this.redondear(data.results[2].data[i].costeActual2)
+                );
+                this.costePagadoEnergiaE3.push(
+                  this.redondear(data.results[2].data[i].costeActual3)
+                );
+                this.costePagadoEnergiaMensual.push(
+                  this.redondear(
+                    data.results[2].data[i].costeActual1 +
+                      data.results[2].data[i].costeActual2 +
+                      data.results[2].data[i].costeActual3
+                  )
+                );
+                this.totalPagadoEnergia +=
+                  data.results[2].data[i].costeActual1 +
+                  data.results[2].data[i].costeActual2 +
+                  data.results[2].data[i].costeActual3;
+              }
+            }
+          }
+
+          this.costeTotalEnergia = [
+            { data: this.costePagadoEnergiaMensual, label: 'Pagado' },
+            { data: this.costeOptimizadoEnergiaMensual, label: 'Optimizado' }
+          ];
+
+          this.costeTotalEnergiaE1 = [
+            { data: this.costePagadoEnergiaE1, label: 'Pagado' },
+            { data: this.costeOptimizadoEnergiaE1, label: 'Optimizado' }
+          ];
+
+          this.costeTotalEnergiaE2 = [
+            { data: this.costePagadoEnergiaE2, label: 'Pagado' },
+            { data: this.costeOptimizadoEnergiaE2, label: 'Optimizado' }
+          ];
+
+          this.costeTotalEnergiaE3 = [
+            { data: this.costePagadoEnergiaE3, label: 'Pagado' },
+            { data: this.costeOptimizadoEnergiaE3, label: 'Optimizado' }
+          ];
+
+          this.totalPagadoEnergia = this.redondear(this.totalPagadoEnergia);
+          this.totalOptimizadoEnergia = this.redondear(
+            this.totalOptimizadoEnergia
+          );
+          this.calculoTotalEnergia = [
+            {
+              data: [this.totalPagadoEnergia],
+              label: 'Total Pagado'
+            },
+            {
+              data: [this.totalOptimizadoEnergia],
+              label: 'Total Optimizado'
+            }
+          ];
 
           Swal.close();
         },
@@ -440,8 +566,8 @@ export class CalculosComponent implements OnInit {
     const impuestoElectrico =
       (this.constIE * this.formulario.impuestoElectrico) / 100;
 
-    const totalPagadoIE = this.totalPagado * impuestoElectrico;
-    const totalAhorradoIE = this.totalOptimizado * impuestoElectrico;
+    const totalPagadoIE = this.totalPagadoPotencia * impuestoElectrico;
+    const totalAhorradoIE = this.totalOptimizadoPotencia * impuestoElectrico;
     const totalPagadoIVA = totalPagadoIE * this.iva;
     const totalAhorradoIVA = totalAhorradoIE * this.iva;
 
@@ -450,7 +576,7 @@ export class CalculosComponent implements OnInit {
       body: [
         [
           'Actual',
-          this.totalPagado.toLocaleString('es-ES', {
+          this.totalPagadoPotencia.toLocaleString('es-ES', {
             style: 'currency',
             currency: 'EUR'
           }),
@@ -465,7 +591,7 @@ export class CalculosComponent implements OnInit {
         ],
         [
           'Optimizado',
-          this.totalOptimizado.toLocaleString('es-ES', {
+          this.totalOptimizadoPotencia.toLocaleString('es-ES', {
             style: 'currency',
             currency: 'EUR'
           }),
@@ -480,7 +606,9 @@ export class CalculosComponent implements OnInit {
         ],
         [
           'Diferencia',
-          (this.totalPagado - this.totalOptimizado).toLocaleString('es-ES', {
+          (
+            this.totalPagadoPotencia - this.totalOptimizadoPotencia
+          ).toLocaleString('es-ES', {
             style: 'currency',
             currency: 'EUR'
           }),
@@ -505,51 +633,134 @@ export class CalculosComponent implements OnInit {
     const textoCortado2 = doc.splitTextToSize(textoModoPago, 150);
     doc.text(textoCortado2, ml, mt + 190, { maxWidth: 170, align: 'justify' });
 
-    // const textoExencion =
-    //   // tslint:disable-next-line: max-line-length
-    //   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    // tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    // quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    // consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    // cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    // non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-    // const textoCortado3 = doc.splitTextToSize(textoExencion, 150);
-    // doc.text(textoCortado3, ml, mt + 220, { maxWidth: 170, align: 'justify' });
+    // Añadimos una tercera página
+    doc.addPage('a4');
+    // logo de la empresa en la esquina superior derecha
+    await html2canvas(this.imagen.nativeElement).then(canvas => {
+      doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
+    });
 
-    // if (this.esTarifa6x()) {
-    //   // Añadimos una tercera página
-    //   doc.addPage('a4');
-    //   // logo de la empresa en la esquina superior derecha
-    //   await html2canvas(this.imagen.nativeElement).then(canvas => {
-    //     doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
-    //   });
+    doc.text(
+      hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear(),
+      ml,
+      mt
+    );
 
-    //   doc.text(
-    //     hoy.getDate() + '/' + hoy.getMonth() + '/' + hoy.getFullYear(),
-    //     ml,
-    //     mt
-    //   );
+    doc.text('E1', ml + 85, mt + 20, null, null, 'center');
+    // Tercera gráfica
+    const anchor3 = event.target;
+    const element3 = document.getElementsByTagName('canvas')[2];
+    anchor3.href = element3.toDataURL();
+    doc.addImage(anchor3.href, 'PNG', ml - 10, mt + 25, 180, 100);
 
-    //   doc.text('Título gráfica', ml + 85, mt + 20, null, null, 'center');
-    //   // Tercera gráfica
-    //   const anchor3 = event.target;
-    //   const element3 = document.getElementsByTagName('canvas')[2];
-    //   anchor3.href = element3.toDataURL();
-    //   doc.addImage(anchor3.href, 'PNG', ml - 10, mt + 30, 180, 100);
+    // Cuarta gráfica
+    doc.text('E2', ml + 85, mt + 135, null, null, 'center');
+    const anchor4 = event.target;
+    const element4 = document.getElementsByTagName('canvas')[3];
+    anchor4.href = element4.toDataURL();
+    doc.addImage(anchor4.href, 'PNG', ml - 10, mt + 140, 180, 100);
 
-    //   doc.autoTable({
-    //     head: [['Excesos Pagados', 'Excesos Calculados', 'Diferencia']],
-    //     body: [
-    //       [
-    //         this.excesosPagado,
-    //         this.excesosAhorrado,
-    //         this.excesosPagado - this.excesosAhorrado
-    //       ]
-    //     ],
-    //     margin: { left: ml, top: mt + 140 },
-    //     tableWidth: 170
-    //   });
-    // }
+    // Añadimos una cuarta página
+    doc.addPage('a4');
+    // logo de la empresa en la esquina superior derecha
+    await html2canvas(this.imagen.nativeElement).then(canvas => {
+      doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
+    });
+
+    doc.text(
+      hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear(),
+      ml,
+      mt
+    );
+
+    // Quinta gráfica
+    doc.text('E3', ml + 85, mt + 20, null, null, 'center');
+    const anchor5 = event.target;
+    const element5 = document.getElementsByTagName('canvas')[4];
+    anchor5.href = element5.toDataURL();
+    doc.addImage(anchor5.href, 'PNG', ml - 10, mt + 25, 180, 100);
+
+    // Añadimos una quinta página
+    doc.addPage('a4');
+    // logo de la empresa en la esquina superior derecha
+    await html2canvas(this.imagen.nativeElement).then(canvas => {
+      doc.addImage(canvas.toDataURL(), 'JPEG', 170, 10, 20, 6);
+    });
+
+    doc.text(
+      hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear(),
+      ml,
+      mt
+    );
+    // Sexta gráfica
+    doc.text('E Total', ml + 85, mt + 20, null, null, 'center');
+    const anchor6 = event.target;
+    const element6 = document.getElementsByTagName('canvas')[5];
+    anchor6.href = element6.toDataURL();
+    doc.addImage(anchor6.href, 'PNG', ml - 10, mt + 25, 180, 90);
+
+    // Septima gráfica
+    doc.text('E Total Anual', ml + 85, mt + 125, null, null, 'center');
+    const anchor7 = event.target;
+    const element7 = document.getElementsByTagName('canvas')[6];
+    anchor7.href = element7.toDataURL();
+    doc.addImage(anchor7.href, 'PNG', ml - 10, mt + 130, 180, 90);
+
+    doc.autoTable({
+      head: [['', 'Precio', 'Precio IE', 'Precio IVA']],
+      body: [
+        [
+          'Actual',
+          this.totalPagadoPotencia.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          totalPagadoIE.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          totalPagadoIVA.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          })
+        ],
+        [
+          'Optimizado',
+          this.totalOptimizadoPotencia.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          totalAhorradoIE.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          totalAhorradoIVA.toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          })
+        ],
+        [
+          'Diferencia',
+          (
+            this.totalPagadoPotencia - this.totalOptimizadoPotencia
+          ).toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          (totalPagadoIE - totalAhorradoIE).toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR'
+          }),
+          (totalPagadoIVA - totalAhorradoIVA).toLocaleString('es-ES', {
+            style: 'currency',
+            currency: 'EUR',
+            maximumFractionDigits: 2
+          })
+        ]
+      ],
+      margin: { left: ml, top: mt + 230 },
+      tableWidth: 170
+    });
 
     // Nombre del archivo
     doc.save(`calculo-${this.formulario.propietario}.pdf`);

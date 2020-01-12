@@ -66,9 +66,9 @@ export class FormCalculoComponent implements OnInit {
 
   ngOnInit() {
     this.propietario = 'Invesvil S.L';
-    this.p1 = 45;
-    this.p2 = 45;
-    this.p3 = 45;
+    this.p1 = 49;
+    this.p2 = 49;
+    this.p3 = 49;
     // this.p4 = 45;
     // this.p5 = 45;
     // this.p6 = 45;

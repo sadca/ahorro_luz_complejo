@@ -1,0 +1,30 @@
+<div class="container mt-5">
+    <form #form="ngForm" (ngSubmit)="login(form)">
+
+        <div class="card p-5 col-6 offset-3">
+            <div class="col-12">
+                <label for="usuario">Usuario</label>
+                <input [(ngModel)]="usuario"
+                    [ngClass]="{'is-invalid': form.submitted && form.controls['usuario'] && form.controls['usuario'].errors}"
+                    required type="text" class="form-control" id="usuario" name="usuario" placeholder="Usuario">
+            </div>
+            <br>
+            <br>
+            <div class="col-12">
+                <label for="pass">Contraseña</label>
+                <input [(ngModel)]="pass"
+                    [ngClass]="{'is-invalid': form.submitted && form.controls['pass'] && form.controls['pass'].errors}"
+                    required type="password" class="form-control" id="pass" name="pass" placeholder="Constraseña">
+                <div *ngIf="form.submitted && form.controls['pass'].errors" class="invalid-feedback">
+                    Este campo es obligatorio
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="col-12">
+                <button [disabled]="form.invalid" type="submit" class="btn btn-primary col-12">Iniciar Sesión</button>
+            </div>
+        </div>
+
+    </form>
+</div>

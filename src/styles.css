@@ -8,10 +8,14 @@
  * Copyright (c) 2017 Daniel Eden
  */
 
+.puntero {
+  cursor: pointer;
+}
+
 .animated {
   animation-duration: 1s;
   animation-fill-mode: both;
-  color:rgb(235, 61, 61)
+  color: rgb(235, 61, 61);
 }
 
 .animated.infinite {

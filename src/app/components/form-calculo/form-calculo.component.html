@@ -26,6 +26,7 @@
 
         <br>
 
+        <h4 class="text-center">Potencia Tarifa Actual</h4>
         <div class="card border-primary">
 
             <div class="form-group card-body">
@@ -80,6 +81,7 @@
                     </div>
 
                 </div>
+
             </div>
 
             <div class="form-group card-body"
@@ -139,27 +141,25 @@
 
         </div>
 
-        <div *ngIf="tarifa == '6.1A' || tarifa == '6.2' || tarifa == '6.3' || tarifa == '6.4' || tarifa == '6.5'">
+        <br><br>
 
-            <br><br>
-
-            <div class="form-check-inline">
-                <label class="form-check-label">
-                    <input [(ngModel)]="calculoAutomatico" value="si" type="radio" class="form-check-input"
-                        name="tipoCalculo">Automático
-                </label>
-            </div>
-            <div class="form-check-inline">
-                <label class="form-check-label">
-                    <input [(ngModel)]="calculoAutomatico" value="no" type="radio" class="form-check-input"
-                        name="tipoCalculo">Manual
-                </label>
-            </div>
-
-            <br><br>
-
+        <div class="form-check-inline">
+            <label class="form-check-label">
+                <input [(ngModel)]="calculoAutomatico" value="si" type="radio" class="form-check-input"
+                    name="tipoCalculo">Automático
+            </label>
+        </div>
+        <div class="form-check-inline">
+            <label class="form-check-label">
+                <input [(ngModel)]="calculoAutomatico" value="no" type="radio" class="form-check-input"
+                    name="tipoCalculo">Manual
+            </label>
         </div>
 
+        <br *ngIf="calculoAutomatico == 'no'">
+        <br *ngIf="calculoAutomatico == 'no'">
+
+        <h4 class="text-center mt-1" *ngIf="calculoAutomatico == 'no'">Potencia Tarifa Optimizada</h4>
         <div class="card border-success" *ngIf="calculoAutomatico == 'no'">
 
             <div class="form-group card-body">
@@ -281,6 +281,7 @@
 
         <br><br>
 
+        <h4 class="text-center mt-1">Precio Potencia Tarifa Actual</h4>
         <div class="card border-danger">
 
             <div class="form-group card-body">
@@ -365,16 +366,281 @@
             </div>
 
         </div>
+
         <br><br>
 
+        <h4 class="text-center mt-1">Precio Potencia Tarifa Optimizada</h4>
+        <div class="card border-danger">
+
+            <div class="form-group card-body">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="precioP1">Precio P1 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP1opt" number type="number" class="form-control"
+                                name="precioP1opt" placeholder="Precio P1 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioP2">Precio P2 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP2opt" number type="number" class="form-control"
+                                name="precioP2opt" placeholder="Precio P2 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioP3">Precio P3 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP3opt" number type="number" class="form-control"
+                                name="precioP3opt" placeholder="Precio P3 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-group card-body"
+                *ngIf="tarifa == '6.1A' || tarifa == '6.2' || tarifa == '6.3' || tarifa == '6.4' || tarifa == '6.5'">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="precioP4">Precio P4 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP4opt" number type="number" class="form-control"
+                                name="precioP4opt" placeholder="Precio P4 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioP5">Precio P5 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP5opt" number type="number" class="form-control"
+                                name="precioP5opt" placeholder="Precio P5 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioP6">Precio P6 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input [(ngModel)]="precioP6opt" number type="number" class="form-control"
+                                name="precioP6opt" placeholder="Precio P6 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <h4 class="text-center mt-1">Precio Energía Tarifa Actual</h4>
+        <div class="card border-warning">
+
+            <div class="form-group card-body">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="precioE1Actual">Precio E1 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE1Actual" number type="number" class="form-control"
+                                id="precioE1Actual" name="precioE1Actual" placeholder="Precio E1 Actual">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioE2Actual">Precio E2 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE2Actual" number type="number" class="form-control"
+                                id="precioE2Actual" name="precioE2Actual" placeholder="Precio E2 Actual">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioE3Actual">Precio E3 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE3Actual" number type="number" class="form-control"
+                                id="precioE3Actual" name="precioE3Actual" placeholder="Precio E3 Actual">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-group card-body"
+                *ngIf="tarifa == '6.1A' || tarifa == '6.2' || tarifa == '6.3' || tarifa == '6.4' || tarifa == '6.5'">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="precioE4Actual">Precio E4 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE4Actual" number type="number" class="form-control"
+                                id="precioE4Actual" name="precioE4Actual" placeholder="Precio E4 Actual">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioE5Actual">Precio E5 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE5Actual" number type="number" class="form-control"
+                                id="precioE5Actual" name="precioE5Actual" placeholder="Precio E5 Actual">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioE6Actual">Precio E6 Tarifa Actual</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE6Actual" number type="number" class="form-control"
+                                id="precioE6Actual" name="precioE6Actual" placeholder="Precio E6 Actual">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <h4 class="text-center mt-1">Precio Energía Tarifa Optimizada</h4>
+        <div class="card border-primary">
+
+            <div class="form-group card-body">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="precioE1Optimizada">Precio E1 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE1Optimizada" number type="number" class="form-control"
+                                id="precioE1Optimizada" name="precioE1Optimizada" placeholder="Precio E1 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioE2Optimizada">Precio E2 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE2Optimizada" number type="number" class="form-control"
+                                id="precioE2Optimizada" name="precioE2Optimizada" placeholder="Precio E2 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioE3Optimizada">Precio E3 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE3Optimizada" number type="number" class="form-control"
+                                id="precioE3Optimizada" name="precioE3Optimizada" placeholder="Precio E3 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-group card-body"
+                *ngIf="tarifa == '6.1A' || tarifa == '6.2' || tarifa == '6.3' || tarifa == '6.4' || tarifa == '6.5'">
+                <div class="row">
+
+                    <div class="col-4">
+                        <label for="precioE4Optimizada">Precio E4 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE4Optimizada" number type="number" class="form-control"
+                                id="precioE4Optimizada" name="precioE4Optimizada" placeholder="Precio E4 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioE5Optimizada">Precio E5 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE5Optimizada" number type="number" class="form-control"
+                                id="precioE5Optimizada" name="precioE5Optimizada" placeholder="Precio E5 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="precioE6Optimizada">Precio E6 Tarifa Optimizada</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="precioE6Optimizada" number type="number" class="form-control"
+                                id="precioE6Optimizada" name="precioE6Optimizada" placeholder="Precio E6 Optimizada">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">€</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <br><br>
+
+        <h4 class="text-center">Impuestos y Descuentos</h4>
         <div class="card border-info">
 
             <div class="form-group card-body">
                 <div class="row">
                     <div class="col-4">
-                        <label for="impuestoElectrico">Impuesto eléctrico</label>
+                        <label for="impuestoElectrico">Impuesto Eléctrico</label>
                         <div class="input-group">
-                            <input [(ngModel)]="impuestoElectrico" number type="number" class="form-control"
+                            <input required [(ngModel)]="impuestoElectrico" number type="number" class="form-control"
                                 id="impuestoElectrico" name="impuestoElectrico" placeholder="Impuesto Eléctrico">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">%</div>
@@ -382,10 +648,20 @@
                         </div>
                     </div>
                     <div class="col-4">
-                        <label for="impuestoElectrico">Descuento</label>
+                        <label for="descuentoPotencia">Descuento Potencia</label>
                         <div class="input-group">
-                            <input [(ngModel)]="descuento" number type="number" class="form-control" id="descuento"
-                                name="descuento" placeholder="Descuento">
+                            <input required [(ngModel)]="descuentoPotencia" number type="number" class="form-control"
+                                id="descuentoPotencia" name="descuentoPotencia" placeholder="Descuento Potencia">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="descuentoEnergia">Descuento Energía</label>
+                        <div class="input-group">
+                            <input required [(ngModel)]="descuentoEnergia" number type="number" class="form-control"
+                                id="descuentoEnergia" name="descuentoEnergia" placeholder="Descuento Energía">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">%</div>
                             </div>
@@ -440,4 +716,30 @@
         <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Calcular</button>
 
     </form>
+
+    <br>
+    <h4 class="text-center">Consultas previas</h4>
+
+    <table class="table table-striped table-dark text-center">
+        <thead>
+            <tr>
+                <th scope="col">Propietario</th>
+                <th scope="col">Tarifa</th>
+                <th scope="col">CUPS</th>
+                <th scope="col">Fecha consulta</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let res of historico; let i = index">
+                <td>{{res.propietario}}</td>
+                <td>{{res.tarifa}}</td>
+                <td>{{res.cups}}</td>
+                <td>{{res.fecha_alta | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td><button (click)="cargar(i)" class="btn btn-success">Cargar</button></td>
+                <td><button (click)="borrarRegistro(res.fecha_alta)" class="btn btn-danger">Borrar</button></td>
+            </tr>
+        </tbody>
+    </table>
 </div>

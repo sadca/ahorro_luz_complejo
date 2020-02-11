@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { FileItem } from '../models/file-items.model';
 
@@ -9,11 +9,22 @@ export class CalculosService {
   webServiceUrl: string;
 
   constructor(private http: HttpClient) {
-    // this.webServiceUrl = 'http://localhost:8080/';
     this.webServiceUrl = 'http://localhost:3000/';
+    // this.webServiceUrl = 'http://sadca.es:3000/';
+  }
+
+  getConsultas() {
+    const url = this.webServiceUrl + 'consultas';
+
+    const headers: HttpHeaders = new HttpHeaders({
+      token: localStorage.getItem('tokenEnergy')
+    });
+
+    return this.http.get(url, { headers });
   }
 
   getCalculo(datos: any) {
+    // console.log(datos);
     const formdata: FormData = new FormData();
     formdata.append('archivo', datos.archivo.archivo);
     formdata.append('propietario', datos.propietario);
@@ -37,12 +48,32 @@ export class CalculosService {
     formdata.append('precioP4', datos.precioP4);
     formdata.append('precioP5', datos.precioP5);
     formdata.append('precioP6', datos.precioP6);
+    formdata.append('precioP1opt', datos.precioP1opt);
+    formdata.append('precioP2opt', datos.precioP2opt);
+    formdata.append('precioP3opt', datos.precioP3opt);
+    formdata.append('precioP4opt', datos.precioP4opt);
+    formdata.append('precioP5opt', datos.precioP5opt);
+    formdata.append('precioP6opt', datos.precioP6opt);
+    formdata.append('precioE1Actual', datos.precioE1Actual);
+    formdata.append('precioE2Actual', datos.precioE2Actual);
+    formdata.append('precioE3Actual', datos.precioE3Actual);
+    formdata.append('precioE4Actual', datos.precioE4Actual);
+    formdata.append('precioE5Actual', datos.precioE5Actual);
+    formdata.append('precioE6Actual', datos.precioE6Actual);
+    formdata.append('precioE1Optimizada', datos.precioE1Optimizada);
+    formdata.append('precioE2Optimizada', datos.precioE2Optimizada);
+    formdata.append('precioE3Optimizada', datos.precioE3Optimizada);
+    formdata.append('precioE4Optimizada', datos.precioE4Optimizada);
+    formdata.append('precioE5Optimizada', datos.precioE5Optimizada);
+    formdata.append('precioE6Optimizada', datos.precioE6Optimizada);
     formdata.append('impuestoElectrico', datos.impuestoElectrico);
+    formdata.append('descuentoPotencia', datos.descuentoPotencia);
+    formdata.append('descuentoEnergia', datos.descuentoEnergia);
 
     const url = this.webServiceUrl;
 
     const headers: HttpHeaders = new HttpHeaders({
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('tokenEnergy')
     });
 
     const req = new HttpRequest('POST', url, formdata, {
@@ -51,6 +82,35 @@ export class CalculosService {
       responseType: 'text'
     });
     // return this.http.request(req);
+    return this.http.post(url, formdata, { headers });
+  }
+
+  login(usuario: string, pass: string) {
+    const formdata: FormData = new FormData();
+    formdata.append('usuario', usuario);
+    formdata.append('pass', pass);
+
+    const url = this.webServiceUrl + 'login';
+
     return this.http.post(url, formdata);
+  }
+
+  estaLogeado() {
+    const fechaLogin = new Date(localStorage.getItem('fechaLogin'));
+    const hoy = new Date();
+    if (fechaLogin.getMilliseconds() - hoy.getMilliseconds() > 7200000) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  borrarConsulta(fecha: any) {
+    const url = this.webServiceUrl + 'consulta/' + fecha;
+
+    const headers: HttpHeaders = new HttpHeaders({
+      token: localStorage.getItem('tokenEnergy')
+    });
+    return this.http.delete(url, { headers });
   }
 }

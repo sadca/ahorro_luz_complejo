@@ -18,6 +18,7 @@ import { NgDropFilesDirective } from './directives/ng-drop-files.directive';
 import es from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { InterceptorService } from './interceptors/interceptor.service';
+import { LoginComponent } from './components/login/login.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -28,7 +29,8 @@ registerLocaleData(es);
     GraficoComponent,
     HomeComponent,
     FormCalculoComponent,
-    NgDropFilesDirective
+    NgDropFilesDirective,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

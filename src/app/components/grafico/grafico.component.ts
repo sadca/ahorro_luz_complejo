@@ -46,22 +46,22 @@ export class GraficoComponent implements OnInit {
 
   @Input() barChartData: ChartDataSets[] = [];
   public lineChartColors: Array<any> = [
-    // {
-    //   backgroundColor: 'rgba(235, 61, 61, 0.8)',
-    //   borderColor: 'black',
-    //   pointBackgroundColor: 'green',
-    //   pointBorderColor: 'yellow',
-    //   pointHoverBackgroundColor: 'purple',
-    //   pointHoverBorderColor: 'brown'
-    // },
-    // {
-    //   backgroundColor: 'rgba(95, 248, 95, 0.8)',
-    //   borderColor: 'rgba(77,83,96,1)',
-    //   pointBackgroundColor: 'rgba(77,83,96,1)',
-    //   pointBorderColor: '#fff',
-    //   pointHoverBackgroundColor: '#fff',
-    //   pointHoverBorderColor: 'rgba(77,83,96,1)'
-    // }
+    {
+      backgroundColor: 'rgba(94,181,239, 0.8)',
+      borderColor: 'black',
+      pointBackgroundColor: 'green',
+      pointBorderColor: 'yellow',
+      pointHoverBackgroundColor: 'purple',
+      pointHoverBorderColor: 'brown'
+    },
+    {
+      backgroundColor: 'rgba(252,192,27, 0.8)',
+      borderColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    }
     // {
     //   // grey
     //   backgroundColor: 'green',
@@ -85,7 +85,7 @@ export class GraficoComponent implements OnInit {
     event: MouseEvent;
     active: {}[];
   }): void {
-    console.log(event, active);
+    // console.log(event, active);
   }
 
   public chartHovered({
@@ -95,6 +95,6 @@ export class GraficoComponent implements OnInit {
     event: MouseEvent;
     active: {}[];
   }): void {
-    console.log(event, active);
+    // console.log(event, active);
   }
 }

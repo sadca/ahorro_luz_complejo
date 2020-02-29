@@ -24,6 +24,13 @@
             </div>
         </div>
 
+
+        <div class="form-check-inline">
+            <input (ngModelChange)="compararPrecios()" [(ngModel)]="comparadorPrecios" type="checkbox"
+                class="form-check-input" name="comparadorPrecios">
+            <label class="form-check-label">Comparador de precios</label>
+        </div>
+
         <br>
 
         <h4 class="text-center">Potencia Tarifa Actual</h4>
@@ -145,13 +152,13 @@
 
         <div class="form-check-inline">
             <label class="form-check-label">
-                <input [(ngModel)]="calculoAutomatico" value="si" type="radio" class="form-check-input"
+                <input [(ngModel)]="calculoAutomatico" disabled="{{comparadorPrecios}}" value="si" type="radio" class="form-check-input"
                     name="tipoCalculo">Automático
             </label>
         </div>
         <div class="form-check-inline">
             <label class="form-check-label">
-                <input [(ngModel)]="calculoAutomatico" value="no" type="radio" class="form-check-input"
+                <input [(ngModel)]="calculoAutomatico" disabled="{{comparadorPrecios}}" value="no" type="radio" class="form-check-input"
                     name="tipoCalculo">Manual
             </label>
         </div>
@@ -378,8 +385,8 @@
                     <div class="col-4">
                         <label for="precioP1">Precio P1 Tarifa Optimizada</label>
                         <div class="input-group">
-                            <input [(ngModel)]="precioP1opt" number type="number" class="form-control"
-                                name="precioP1opt" placeholder="Precio P1 Optimizada">
+                            <input required="{{comparadorPrecios}}" [(ngModel)]="precioP1opt" number type="number"
+                                class="form-control" name="precioP1opt" placeholder="Precio P1 Optimizada">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>
@@ -389,8 +396,8 @@
                     <div class="col-4">
                         <label for="precioP2">Precio P2 Tarifa Optimizada</label>
                         <div class="input-group">
-                            <input [(ngModel)]="precioP2opt" number type="number" class="form-control"
-                                name="precioP2opt" placeholder="Precio P2 Optimizada">
+                            <input required="{{comparadorPrecios}}" [(ngModel)]="precioP2opt" number type="number"
+                                class="form-control" name="precioP2opt" placeholder="Precio P2 Optimizada">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>
@@ -400,8 +407,8 @@
                     <div class="col-4">
                         <label for="precioP3">Precio P3 Tarifa Optimizada</label>
                         <div class="input-group">
-                            <input [(ngModel)]="precioP3opt" number type="number" class="form-control"
-                                name="precioP3opt" placeholder="Precio P3 Optimizada">
+                            <input required="{{comparadorPrecios}}" [(ngModel)]="precioP3opt" number type="number"
+                                class="form-control" name="precioP3opt" placeholder="Precio P3 Optimizada">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>
@@ -419,8 +426,8 @@
                     <div class="col-4">
                         <label for="precioP4">Precio P4 Tarifa Optimizada</label>
                         <div class="input-group">
-                            <input [(ngModel)]="precioP4opt" number type="number" class="form-control"
-                                name="precioP4opt" placeholder="Precio P4 Optimizada">
+                            <input required="{{comparadorPrecios}}" [(ngModel)]="precioP4opt" number type="number"
+                                class="form-control" name="precioP4opt" placeholder="Precio P4 Optimizada">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>
@@ -430,8 +437,8 @@
                     <div class="col-4">
                         <label for="precioP5">Precio P5 Tarifa Optimizada</label>
                         <div class="input-group">
-                            <input [(ngModel)]="precioP5opt" number type="number" class="form-control"
-                                name="precioP5opt" placeholder="Precio P5 Optimizada">
+                            <input required="{{comparadorPrecios}}" [(ngModel)]="precioP5opt" number type="number"
+                                class="form-control" name="precioP5opt" placeholder="Precio P5 Optimizada">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>
@@ -441,8 +448,8 @@
                     <div class="col-4">
                         <label for="precioP6">Precio P6 Tarifa Optimizada</label>
                         <div class="input-group">
-                            <input [(ngModel)]="precioP6opt" number type="number" class="form-control"
-                                name="precioP6opt" placeholder="Precio P6 Optimizada">
+                            <input required="{{comparadorPrecios}}" [(ngModel)]="precioP6opt" number type="number"
+                                class="form-control" name="precioP6opt" placeholder="Precio P6 Optimizada">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">€</div>
                             </div>

@@ -69,6 +69,7 @@ export class CalculosService {
     formdata.append('impuestoElectrico', datos.impuestoElectrico);
     formdata.append('descuentoPotencia', datos.descuentoPotencia);
     formdata.append('descuentoEnergia', datos.descuentoEnergia);
+    formdata.append('comparadorPrecios', datos.comparadorPrecios);
 
     const url = this.webServiceUrl;
 

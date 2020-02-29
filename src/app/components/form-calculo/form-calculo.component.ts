@@ -17,7 +17,8 @@ export class FormCalculoComponent implements OnInit {
 
   tarifa: string;
 
-  calculoAutomatico: string = 'si';
+  calculoAutomatico: string = 'no';
+  comparadorPrecios: boolean = true;
 
   p1: number;
   p2: number;
@@ -87,7 +88,11 @@ export class FormCalculoComponent implements OnInit {
     { tarifa: '6.5' }
   ];
 
-  constructor(private calculosServ: CalculosService) {}
+  constructor(private calculosServ: CalculosService) {
+    this.impuestoElectrico = 100;
+    this.descuentoPotencia = 0;
+    this.descuentoEnergia = 0;
+  }
 
   ngOnInit() {
     // this.propietario = 'Invesvil S.L';
@@ -187,7 +192,8 @@ export class FormCalculoComponent implements OnInit {
       precioE6Optimizada: this.precioE6Optimizada,
       impuestoElectrico: this.impuestoElectrico,
       descuentoPotencia: this.descuentoPotencia,
-      descuentoEnergia: this.descuentoEnergia
+      descuentoEnergia: this.descuentoEnergia,
+      comparadorPrecios: this.comparadorPrecios
     };
     this.calculoRealizado.emit(datos);
   }
@@ -310,6 +316,12 @@ export class FormCalculoComponent implements OnInit {
     this.precioP4 = this.tratarCeros(this.historico[index].prc_p4_act);
     this.precioP5 = this.tratarCeros(this.historico[index].prc_p5_act);
     this.precioP6 = this.tratarCeros(this.historico[index].prc_p6_act);
+    this.precioP1opt = this.tratarCeros(this.historico[index].prc_p1_opt);
+    this.precioP2opt = this.tratarCeros(this.historico[index].prc_p2_opt);
+    this.precioP3opt = this.tratarCeros(this.historico[index].prc_p3_opt);
+    this.precioP4opt = this.tratarCeros(this.historico[index].prc_p4_opt);
+    this.precioP5opt = this.tratarCeros(this.historico[index].prc_p5_opt);
+    this.precioP6opt = this.tratarCeros(this.historico[index].prc_p6_opt);
     this.precioE1Actual = this.tratarCeros(this.historico[index].prc_e1_act);
     this.precioE2Actual = this.tratarCeros(this.historico[index].prc_e2_act);
     this.precioE3Actual = this.tratarCeros(this.historico[index].prc_e3_act);
@@ -320,19 +332,19 @@ export class FormCalculoComponent implements OnInit {
       this.historico[index].prc_e1_opt
     );
     this.precioE2Optimizada = this.tratarCeros(
-      this.historico[index].prc_e1_opt
+      this.historico[index].prc_e2_opt
     );
     this.precioE3Optimizada = this.tratarCeros(
-      this.historico[index].prc_e1_opt
+      this.historico[index].prc_e3_opt
     );
     this.precioE4Optimizada = this.tratarCeros(
-      this.historico[index].prc_e1_opt
+      this.historico[index].prc_e4_opt
     );
     this.precioE5Optimizada = this.tratarCeros(
-      this.historico[index].prc_e1_opt
+      this.historico[index].prc_e5_opt
     );
     this.precioE6Optimizada = this.tratarCeros(
-      this.historico[index].prc_e1_opt
+      this.historico[index].prc_e6_opt
     );
     this.impuestoElectrico = this.historico[index].impuesto_elec;
     this.descuentoPotencia = this.historico[index].desc_pot;
@@ -348,7 +360,6 @@ export class FormCalculoComponent implements OnInit {
   }
 
   borrarRegistro(fecha: Date) {
-    console.log(fecha);
     const dt = new Date(fecha);
     const fechaString =
       dt
@@ -377,7 +388,7 @@ export class FormCalculoComponent implements OnInit {
         .getSeconds()
         .toString()
         .padStart(2, '0');
-    console.log(fechaString);
+    // console.log(fechaString);
     Swal.fire({
       type: 'question',
       title: '¿Está seguro que desea borrar el registro seleccionado?',
@@ -398,5 +409,9 @@ export class FormCalculoComponent implements OnInit {
         });
       }
     });
+  }
+
+  compararPrecios() {
+    this.calculoAutomatico = 'si';
   }
 }

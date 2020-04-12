@@ -72,13 +72,13 @@ export class FormCalculoComponent implements OnInit {
   estaSobreElemento = false;
 
   // { tarifa: '2A' },
-  // { tarifa: '2.0A' },
-  // { tarifa: '2.0DHA' },
-  // { tarifa: '2.0DHS' },
   // { tarifa: '2.1A' },
   // { tarifa: '2.1DHA' },
   // { tarifa: '2.1DHS' },
   tarifas = [
+    { tarifa: '2.0A' },
+    { tarifa: '2.0DHA' },
+    { tarifa: '2.0DHS' },
     { tarifa: '3.0A' },
     { tarifa: '3.1A' },
     { tarifa: '6.1A' },

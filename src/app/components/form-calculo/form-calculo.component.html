@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA' && tarifa != '2.0DHS'">
                         <label for="p2">P2 Tarifa Actual</label>
                         <div class="input-group">
                             <input [(ngModel)]="p2"
@@ -71,7 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA' && tarifa != '2.0DHS'">
                         <label for="p3">P3 Tarifa Actual</label>
                         <div class="input-group">
                             <input [(ngModel)]="p3"
@@ -189,7 +189,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA' && tarifa != '2.0DHS'">
                         <label for="p2Calculos">P2 Tarifa Calculada</label>
                         <div class="input-group">
                             <input [(ngModel)]="p2Calculos"
@@ -206,7 +206,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA' && tarifa != '2.0DHS'">
                         <label for="p3Calculos">P3 Tarifa Calculada</label>
                         <div class="input-group">
                             <input [(ngModel)]="p3Calculos"
@@ -305,7 +305,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA' && tarifa != '2.0DHS'">
                         <label for="precioP2">Precio P2 Tarifa Actual</label>
                         <div class="input-group">
                             <input [(ngModel)]="precioP2" number type="number" class="form-control" id="precioP2"
@@ -316,7 +316,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA' && tarifa != '2.0DHS'">
                         <label for="precioP3">Precio P3 Tarifa Actual</label>
                         <div class="input-group">
                             <input [(ngModel)]="precioP3" number type="number" class="form-control" id="precioP3"
@@ -393,7 +393,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA' && tarifa != '2.0DHS'">
                         <label for="precioP2">Precio P2 Tarifa Optimizada</label>
                         <div class="input-group">
                             <input required="{{comparadorPrecios}}" [(ngModel)]="precioP2opt" number type="number"
@@ -404,7 +404,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA' && tarifa != '2.0DHS'">
                         <label for="precioP3">Precio P3 Tarifa Optimizada</label>
                         <div class="input-group">
                             <input required="{{comparadorPrecios}}" [(ngModel)]="precioP3opt" number type="number"
@@ -481,7 +481,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA'">
                         <label for="precioE2Actual">Precio E2 Tarifa Actual</label>
                         <div class="input-group">
                             <input required [(ngModel)]="precioE2Actual" number type="number" class="form-control"
@@ -492,7 +492,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A'">
                         <label for="precioE3Actual">Precio E3 Tarifa Actual</label>
                         <div class="input-group">
                             <input required [(ngModel)]="precioE3Actual" number type="number" class="form-control"
@@ -569,7 +569,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A' && tarifa != '2.0DHA'">
                         <label for="precioE2Optimizada">Precio E2 Tarifa Optimizada</label>
                         <div class="input-group">
                             <input required [(ngModel)]="precioE2Optimizada" number type="number" class="form-control"
@@ -580,7 +580,7 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col-4" *ngIf="tarifa != '2.0A'">
                         <label for="precioE3Optimizada">Precio E3 Tarifa Optimizada</label>
                         <div class="input-group">
                             <input required [(ngModel)]="precioE3Optimizada" number type="number" class="form-control"

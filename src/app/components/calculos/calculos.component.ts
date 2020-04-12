@@ -11,12 +11,12 @@ import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-calculos',
   templateUrl: './calculos.component.html',
-  styles: []
+  styles: [],
 })
 export class CalculosComponent implements OnInit {
   @Input() formulario: any = {
     propietario: 'Usureros',
-    tarifa: '2HA'
+    tarifa: '2HA',
   };
 
   @ViewChild('imagen', { static: true }) imagen: ElementRef;
@@ -30,158 +30,158 @@ export class CalculosComponent implements OnInit {
     { default: false, valor: 'polarArea', nombre: 'Area' },
     { default: false, valor: 'bubble', nombre: 'Burbujas' },
     { default: false, valor: 'pie', nombre: 'Tarta' },
-    { default: false, valor: 'scatter', nombre: 'Dispersión' }
+    { default: false, valor: 'scatter', nombre: 'Dispersión' },
   ];
 
   public optGrafPerPot: ChartOptions = {
     responsive: true,
     showLines: false,
     legend: {
-      labels: { fontColor: 'black' }
+      labels: { fontColor: 'black' },
     },
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
       xAxes: [
         {
           ticks: { fontColor: 'black', beginAtZero: false },
-          gridLines: { color: 'rgba(0,0,0,0.1)' }
-        }
+          gridLines: { color: 'rgba(0,0,0,0.1)' },
+        },
       ],
-      yAxes: []
+      yAxes: [],
     },
     plugins: {
       datalabels: {
         // Altura
         anchor: 'end',
         align: 'end',
-        color: 'black'
-      }
-    }
+        color: 'black',
+      },
+    },
   };
   public optGrafTotalPot: ChartOptions = {
     responsive: true,
     showLines: false,
     legend: {
-      labels: { fontColor: 'black' }
+      labels: { fontColor: 'black' },
     },
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
       xAxes: [
         {
           ticks: { fontColor: 'black', beginAtZero: false },
-          gridLines: { color: 'rgba(0,0,0,0.1)' }
-        }
+          gridLines: { color: 'rgba(0,0,0,0.1)' },
+        },
       ],
-      yAxes: []
+      yAxes: [],
     },
     plugins: {
       datalabels: {
         // Altura
         anchor: 'end',
         align: 'end',
-        color: 'black'
-      }
-    }
+        color: 'black',
+      },
+    },
   };
   public optGrafPerEner: ChartOptions = {
     responsive: true,
     showLines: false,
     legend: {
-      labels: { fontColor: 'black' }
+      labels: { fontColor: 'black' },
     },
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
       xAxes: [
         {
           ticks: { fontColor: 'black', beginAtZero: false },
-          gridLines: { color: 'rgba(0,0,0,0.1)' }
-        }
+          gridLines: { color: 'rgba(0,0,0,0.1)' },
+        },
       ],
-      yAxes: []
+      yAxes: [],
     },
     plugins: {
       datalabels: {
         // Altura
         anchor: 'end',
         align: 'end',
-        color: 'black'
-      }
-    }
+        color: 'black',
+      },
+    },
   };
   public optGrafTotalEner: ChartOptions = {
     responsive: true,
     showLines: false,
     legend: {
-      labels: { fontColor: 'black' }
+      labels: { fontColor: 'black' },
     },
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
       xAxes: [
         {
           ticks: { fontColor: 'black', beginAtZero: false },
-          gridLines: { color: 'rgba(0,0,0,0.1)' }
-        }
+          gridLines: { color: 'rgba(0,0,0,0.1)' },
+        },
       ],
-      yAxes: []
+      yAxes: [],
     },
     plugins: {
       datalabels: {
         // Altura
         anchor: 'end',
         align: 'end',
-        color: 'black'
-      }
-    }
+        color: 'black',
+      },
+    },
   };
   public optGrafPerTotal: ChartOptions = {
     responsive: true,
     showLines: false,
     legend: {
-      labels: { fontColor: 'black' }
+      labels: { fontColor: 'black' },
     },
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
       xAxes: [
         {
           ticks: { fontColor: 'black', beginAtZero: false },
-          gridLines: { color: 'rgba(0,0,0,0.1)' }
-        }
+          gridLines: { color: 'rgba(0,0,0,0.1)' },
+        },
       ],
-      yAxes: []
+      yAxes: [],
     },
     plugins: {
       datalabels: {
         // Altura
         anchor: 'end',
         align: 'end',
-        color: 'black'
-      }
-    }
+        color: 'black',
+      },
+    },
   };
   public optGrafTotal: ChartOptions = {
     responsive: true,
     showLines: false,
     legend: {
-      labels: { fontColor: 'black' }
+      labels: { fontColor: 'black' },
     },
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
       xAxes: [
         {
           ticks: { fontColor: 'black', beginAtZero: false },
-          gridLines: { color: 'rgba(0,0,0,0.1)' }
-        }
+          gridLines: { color: 'rgba(0,0,0,0.1)' },
+        },
       ],
-      yAxes: []
+      yAxes: [],
     },
     plugins: {
       datalabels: {
         // Altura
         anchor: 'end',
         align: 'end',
-        color: 'black'
-      }
-    }
+        color: 'black',
+      },
+    },
   };
 
   labelsTotal: Label[] = ['Total'];
@@ -227,7 +227,7 @@ export class CalculosComponent implements OnInit {
     Swal.fire({
       type: 'info',
       text: 'Calculando...',
-      allowOutsideClick: false
+      allowOutsideClick: false,
     });
     Swal.showLoading();
 
@@ -261,7 +261,7 @@ export class CalculosComponent implements OnInit {
               type: 'error',
               title: 'Algo ha ocurrido...',
               text:
-                'No hemos podido calcular su factura, repita el proceso de nuevo, por favor'
+                'No hemos podido calcular su factura, repita el proceso de nuevo, por favor',
             });
             return;
           }
@@ -503,8 +503,8 @@ export class CalculosComponent implements OnInit {
             { data: this.costePagadoPotencia, label: 'Factura Actual' },
             {
               data: this.costeOptimizadoPotencia,
-              label: 'Factura Optimizada'
-            }
+              label: 'Factura Optimizada',
+            },
           ];
 
           let confEjeY: any = [
@@ -514,10 +514,10 @@ export class CalculosComponent implements OnInit {
                 min:
                   Math.round(
                     Math.min.apply(null, this.costeOptimizadoPotencia) / 2000
-                  ) * 1000
+                  ) * 1000,
               },
-              gridLines: { color: 'rgba(0,0,0,0.1)' }
-            }
+              gridLines: { color: 'rgba(0,0,0,0.1)' },
+            },
           ];
           this.optGrafPerPot.scales.yAxes.push(confEjeY);
 
@@ -531,12 +531,12 @@ export class CalculosComponent implements OnInit {
           this.calculoTotalPotencia = [
             {
               data: [this.totalPagadoPotencia],
-              label: 'Factura anual actual'
+              label: 'Factura anual actual',
             },
             {
               data: [this.totalOptimizadoPotencia],
-              label: 'Factura anual optimizada'
-            }
+              label: 'Factura anual optimizada',
+            },
           ];
 
           confEjeY = [
@@ -549,10 +549,10 @@ export class CalculosComponent implements OnInit {
                       this.totalPagadoPotencia,
                       this.totalOptimizadoPotencia
                     ) / 2000
-                  ) * 1000
+                  ) * 1000,
               },
-              gridLines: { color: 'rgba(0,0,0,0.1)' }
-            }
+              gridLines: { color: 'rgba(0,0,0,0.1)' },
+            },
           ];
           this.optGrafTotalPot.scales.yAxes.push(confEjeY);
 
@@ -560,8 +560,8 @@ export class CalculosComponent implements OnInit {
             { data: this.costePagadoEnergiaMensual, label: 'Factura Actual' },
             {
               data: this.costeOptimizadoEnergiaMensual,
-              label: 'Factura Optimizada'
-            }
+              label: 'Factura Optimizada',
+            },
           ];
 
           confEjeY = [
@@ -572,10 +572,10 @@ export class CalculosComponent implements OnInit {
                   Math.round(
                     Math.min.apply(null, this.costeOptimizadoEnergiaMensual) /
                       2000
-                  ) * 1000
+                  ) * 1000,
               },
-              gridLines: { color: 'rgba(0,0,0,0.1)' }
-            }
+              gridLines: { color: 'rgba(0,0,0,0.1)' },
+            },
           ];
 
           this.totalPagadoEnergia = this.aplicarDescuentoEnergia(
@@ -587,12 +587,12 @@ export class CalculosComponent implements OnInit {
           this.calculoTotalEnergia = [
             {
               data: [this.totalPagadoEnergia],
-              label: 'Factura anual actual'
+              label: 'Factura anual actual',
             },
             {
               data: [this.totalOptimizadoEnergia],
-              label: 'Factura anual optimizada'
-            }
+              label: 'Factura anual optimizada',
+            },
           ];
 
           confEjeY = [
@@ -605,10 +605,10 @@ export class CalculosComponent implements OnInit {
                       this.totalPagadoEnergia,
                       this.totalOptimizadoEnergia
                     ) / 2000
-                  ) * 1000
+                  ) * 1000,
               },
-              gridLines: { color: 'rgba(0,0,0,0.1)' }
-            }
+              gridLines: { color: 'rgba(0,0,0,0.1)' },
+            },
           ];
           this.optGrafTotalEner.scales.yAxes.push(confEjeY);
 
@@ -616,18 +616,20 @@ export class CalculosComponent implements OnInit {
             { data: this.costePagadoPotencia, label: 'Factura Actual' },
             {
               data: this.costeOptimizadoPotencia,
-              label: 'Factura Optimizada'
-            }
+              label: 'Factura Optimizada',
+            },
           ];
 
           this.costeTotalEnergia = [
             { data: this.costePagadoEnergiaMensual, label: 'Factura Actual' },
             {
               data: this.costeOptimizadoEnergiaMensual,
-              label: 'Factura Optimizada'
-            }
+              label: 'Factura Optimizada',
+            },
           ];
 
+          this.sumaTotalPagado = 0;
+          this.sumaTotalOptimizado = 0;
           for (let i = 0; i < this.costePagadoPotencia.length; i++) {
             this.costePagadoConjunto.push(
               this.redondear(
@@ -640,25 +642,32 @@ export class CalculosComponent implements OnInit {
                   this.costeOptimizadoEnergiaMensual[i]
               )
             );
+            this.sumaTotalPagado += this.redondear(
+              this.costePagadoPotencia[i] + this.costePagadoEnergiaMensual[i]
+            );
+            this.sumaTotalOptimizado += this.redondear(
+              this.costeOptimizadoPotencia[i] +
+                this.costeOptimizadoEnergiaMensual[i]
+            );
           }
 
           this.sumaTotalPeriodos = [
             { data: this.costePagadoConjunto, label: 'Factura Pagada' },
-            { data: this.costeOptimizadoConjunto, label: 'Factura Calculada' }
+            { data: this.costeOptimizadoConjunto, label: 'Factura Calculada' },
           ];
 
-          this.sumaTotalPagado = this.redondear(this.sumaTotalPagado);
-          this.sumaTotalOptimizado = this.redondear(this.sumaTotalOptimizado);
+          // this.sumaTotalPagado = this.redondear(this.sumaTotalPagado);
+          // this.sumaTotalOptimizado = this.redondear(this.sumaTotalOptimizado);
 
           this.sumaTotal = [
             {
               data: [this.sumaTotalPagado],
-              label: 'Total Pagado'
+              label: 'Total Pagado',
             },
             {
               data: [this.sumaTotalOptimizado],
-              label: 'Total Optimizado'
-            }
+              label: 'Total Optimizado',
+            },
           ];
 
           confEjeY = [
@@ -669,16 +678,16 @@ export class CalculosComponent implements OnInit {
                   Math.round(
                     Math.min(this.sumaTotalPagado, this.sumaTotalOptimizado) /
                       2000
-                  ) * 1000
+                  ) * 1000,
               },
-              gridLines: { color: 'rgba(0,0,0,0.1)' }
-            }
+              gridLines: { color: 'rgba(0,0,0,0.1)' },
+            },
           ];
           this.optGrafTotal.scales.yAxes.push(confEjeY);
 
           Swal.close();
         },
-        err => {
+        (err) => {
           Swal.close();
           // console.log(err);
           const error = err;
@@ -692,7 +701,7 @@ export class CalculosComponent implements OnInit {
             title: 'Algo ha ocurrido...',
             text:
               'No hemos podido calcular su factura, repita el proceso de nuevo, por favor',
-            footer: mensaje
+            footer: mensaje,
           });
           this.router.navigate(['/home']);
         },
@@ -857,18 +866,18 @@ export class CalculosComponent implements OnInit {
             'Actual',
             this.formulario.precioP1,
             this.formulario.precioP2,
-            this.formulario.precioP3
+            this.formulario.precioP3,
           ],
           [
             'Nueva',
             this.formulario.precioP1opt,
             this.formulario.precioP2opt,
-            this.formulario.precioP3opt
-          ]
+            this.formulario.precioP3opt,
+          ],
         ],
         startY: mt + 45,
         margin: { left: ml, top: mt + 45 },
-        tableWidth: 170
+        tableWidth: 170,
       });
     } else {
       doc.autoTable({
@@ -880,8 +889,8 @@ export class CalculosComponent implements OnInit {
             'P3(€/kWh)',
             'P4(€/kWh)',
             'P5(€/kWh)',
-            'P6(€/kWh)'
-          ]
+            'P6(€/kWh)',
+          ],
         ],
         body: [
           [
@@ -891,7 +900,7 @@ export class CalculosComponent implements OnInit {
             this.formulario.precioP3,
             this.formulario.precioP4,
             this.formulario.precioP5,
-            this.formulario.precioP6
+            this.formulario.precioP6,
           ],
           [
             'Nueva',
@@ -900,12 +909,12 @@ export class CalculosComponent implements OnInit {
             this.formulario.precioP3opt,
             this.formulario.precioP4opt,
             this.formulario.precioP5opt,
-            this.formulario.precioP6opt
-          ]
+            this.formulario.precioP6opt,
+          ],
         ],
         startY: mt + 45,
         margin: { left: ml, top: mt + 45 },
-        tableWidth: 170
+        tableWidth: 170,
       });
     }
 
@@ -921,18 +930,18 @@ export class CalculosComponent implements OnInit {
               'Actual',
               this.datos[2].data[0].precioEnergiaActual1,
               this.datos[2].data[0].precioEnergiaActual2,
-              this.datos[2].data[0].precioEnergiaActual3
+              this.datos[2].data[0].precioEnergiaActual3,
             ],
             [
               'Nueva',
               this.datos[2].data[0].precioEnergiaNuevo1,
               this.datos[2].data[0].precioEnergiaNuevo2,
-              this.datos[2].data[0].precioEnergiaNuevo3
-            ]
+              this.datos[2].data[0].precioEnergiaNuevo3,
+            ],
           ],
           startY: mt + 85,
           margin: { left: ml, top: mt + 85 },
-          tableWidth: 170
+          tableWidth: 170,
         });
       } else {
         doc.autoTable({
@@ -942,18 +951,18 @@ export class CalculosComponent implements OnInit {
               'Actual',
               this.formulario.precioE1Actual,
               this.formulario.precioE2Actual,
-              this.formulario.precioE3Actual
+              this.formulario.precioE3Actual,
             ],
             [
               'Nueva',
               this.formulario.precioE1Optimizada,
               this.formulario.precioE2Optimizada,
-              this.formulario.precioE3Optimizada
-            ]
+              this.formulario.precioE3Optimizada,
+            ],
           ],
           startY: mt + 85,
           margin: { left: ml, top: mt + 85 },
-          tableWidth: 170
+          tableWidth: 170,
         });
       }
     } else {
@@ -967,8 +976,8 @@ export class CalculosComponent implements OnInit {
               'E3(€/kWh)',
               'E4(€/kWh)',
               'E5(€/kWh)',
-              'E6(€/kWh)'
-            ]
+              'E6(€/kWh)',
+            ],
           ],
           body: [
             [
@@ -978,7 +987,7 @@ export class CalculosComponent implements OnInit {
               this.datos[2].data[0].precioEnergiaActual3,
               this.datos[2].data[0].precioEnergiaActual4,
               this.datos[2].data[0].precioEnergiaActual5,
-              this.datos[2].data[0].precioEnergiaActual6
+              this.datos[2].data[0].precioEnergiaActual6,
             ],
             [
               'Nueva',
@@ -987,12 +996,12 @@ export class CalculosComponent implements OnInit {
               this.datos[2].data[0].precioEnergiaNuevo3,
               this.datos[2].data[0].precioEnergiaNuevo4,
               this.datos[2].data[0].precioEnergiaNuevo5,
-              this.datos[2].data[0].precioEnergiaNuevo6
-            ]
+              this.datos[2].data[0].precioEnergiaNuevo6,
+            ],
           ],
           startY: mt + 85,
           margin: { left: ml, top: mt + 85 },
-          tableWidth: 170
+          tableWidth: 170,
         });
       } else {
         doc.autoTable({
@@ -1004,8 +1013,8 @@ export class CalculosComponent implements OnInit {
               'E3(€/kWh)',
               'E4(€/kWh)',
               'E5(€/kWh)',
-              'E6(€/kWh)'
-            ]
+              'E6(€/kWh)',
+            ],
           ],
           body: [
             [
@@ -1015,7 +1024,7 @@ export class CalculosComponent implements OnInit {
               this.formulario.precioE3Actual,
               this.formulario.precioE4Actual,
               this.formulario.precioE5Actual,
-              this.formulario.precioE6Actual
+              this.formulario.precioE6Actual,
             ],
             [
               'Nueva',
@@ -1024,12 +1033,12 @@ export class CalculosComponent implements OnInit {
               this.formulario.precioE3Optimizada,
               this.formulario.precioE4Optimizada,
               this.formulario.precioE5Optimizada,
-              this.formulario.precioE6Optimizada
-            ]
+              this.formulario.precioE6Optimizada,
+            ],
           ],
           startY: mt + 85,
           margin: { left: ml, top: mt + 85 },
-          tableWidth: 170
+          tableWidth: 170,
         });
       }
     }
@@ -1055,39 +1064,39 @@ export class CalculosComponent implements OnInit {
           '',
           'Factura Total',
           'Factura Total\n(IE incluido)',
-          'Factura Total\n(IVA incluido)'
-        ]
+          'Factura Total\n(IVA incluido)',
+        ],
       ],
       body: [
         [
           'Actual',
           this.sumaTotalPagado.toLocaleString('es-ES', {
             style: 'currency',
-            currency: 'EUR'
+            currency: 'EUR',
           }),
           sumaTotalPagadoIE.toLocaleString('es-ES', {
             style: 'currency',
-            currency: 'EUR'
+            currency: 'EUR',
           }),
           sumaTotalPagadoIVA.toLocaleString('es-ES', {
             style: 'currency',
-            currency: 'EUR'
-          })
+            currency: 'EUR',
+          }),
         ],
         [
           'Optimizado',
           this.sumaTotalOptimizado.toLocaleString('es-ES', {
             style: 'currency',
-            currency: 'EUR'
+            currency: 'EUR',
           }),
           sumaTotalAhorradoIE.toLocaleString('es-ES', {
             style: 'currency',
-            currency: 'EUR'
+            currency: 'EUR',
           }),
           sumaTotalAhorradoIVA.toLocaleString('es-ES', {
             style: 'currency',
-            currency: 'EUR'
-          })
+            currency: 'EUR',
+          }),
         ],
         [
           'Ahorro',
@@ -1095,23 +1104,23 @@ export class CalculosComponent implements OnInit {
             'es-ES',
             {
               style: 'currency',
-              currency: 'EUR'
+              currency: 'EUR',
             }
           ),
           (sumaTotalPagadoIE - sumaTotalAhorradoIE).toLocaleString('es-ES', {
             style: 'currency',
-            currency: 'EUR'
+            currency: 'EUR',
           }),
           (sumaTotalPagadoIVA - sumaTotalAhorradoIVA).toLocaleString('es-ES', {
             style: 'currency',
             currency: 'EUR',
-            maximumFractionDigits: 2
-          })
-        ]
+            maximumFractionDigits: 2,
+          }),
+        ],
       ],
       startY: mt + 230,
       margin: { left: ml, top: mt + 230 },
-      tableWidth: 170
+      tableWidth: 170,
     });
 
     // doc.text(
@@ -1144,7 +1153,7 @@ export class CalculosComponent implements OnInit {
     doc.text(textoCortado, ml, mt + 275, { maxWidth: 170, align: 'justify' });
 
     // logo de la empresa en la esquina superior derecha
-    await html2canvas(this.imagen.nativeElement).then(canvas => {
+    await html2canvas(this.imagen.nativeElement).then((canvas) => {
       doc.addImage(canvas.toDataURL(), 'JPEG', 180, 5, 20, 8);
     });
 

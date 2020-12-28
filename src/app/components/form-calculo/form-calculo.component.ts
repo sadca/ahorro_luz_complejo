@@ -6,7 +6,7 @@ import { CalculosService } from '../../services/calculos.service';
 @Component({
   selector: 'app-form-calculo',
   templateUrl: './form-calculo.component.html',
-  styleUrls: ['./form-calculo.component.css']
+  styleUrls: ['./form-calculo.component.css'],
 })
 export class FormCalculoComponent implements OnInit {
   @Output() calculoRealizado: EventEmitter<any> = new EventEmitter();
@@ -15,10 +15,18 @@ export class FormCalculoComponent implements OnInit {
 
   propietario: string;
 
-  tarifa: string;
+  observaciones: string;
 
-  calculoAutomatico: string = 'no';
-  comparadorPrecios: boolean = true;
+  tarifa: string;
+  fijoIndexado: string;
+  fee: number;
+
+  tarifaOptimizada: string;
+  fijoIndexadoOptimizada: string;
+  feeOpt: number;
+
+  calculoAutomatico: string;
+  comparadorPrecios: boolean;
 
   p1: number;
   p2: number;
@@ -62,36 +70,61 @@ export class FormCalculoComponent implements OnInit {
   precioE5Optimizada: number;
   precioE6Optimizada: number;
 
+  preMensPlanaAct: number;
+  penalizacionAct: number;
+  inicioPenalizacionAct: number;
+  preMensPlanaOpt: number;
+  penalizacionOpt: number;
+  inicioPenalizacionOpt: number;
+
+  formulaIndexadoActual: string;
+  formulaIndexadoOptim: string;
+
   impuestoElectrico: number;
 
   descuentoPotencia: number;
   descuentoEnergia: number;
+  descuentoGeneral: number;
+  conceptoDescuento: string;
+  descuentoPotenciaOpt: number;
+  descuentoEnergiaOpt: number;
+  descuentoGeneralOpt: number;
+  conceptoDescuentoOpt: string;
 
   archivo: any;
   archivos: FileItem[] = [];
   estaSobreElemento = false;
 
-  // { tarifa: '2A' },
-  // { tarifa: '2.1A' },
-  // { tarifa: '2.1DHA' },
-  // { tarifa: '2.1DHS' },
   tarifas = [
     { tarifa: '2.0A' },
     { tarifa: '2.0DHA' },
     { tarifa: '2.0DHS' },
+    { tarifa: '2.1A' },
+    { tarifa: '2.1DHA' },
+    { tarifa: '2.1DHS' },
     { tarifa: '3.0A' },
     { tarifa: '3.1A' },
     { tarifa: '6.1A' },
     { tarifa: '6.2' },
     { tarifa: '6.3' },
     { tarifa: '6.4' },
-    { tarifa: '6.5' }
+    { tarifa: '6.5' },
   ];
 
   constructor(private calculosServ: CalculosService) {
     this.impuestoElectrico = 100;
     this.descuentoPotencia = 0;
     this.descuentoEnergia = 0;
+    this.descuentoGeneral = 0;
+    this.descuentoPotenciaOpt = 0;
+    this.descuentoEnergiaOpt = 0;
+    this.descuentoGeneralOpt = 0;
+    this.tarifa = '3.0A';
+    this.fijoIndexado = 'fijo';
+    this.tarifaOptimizada = '3.0A';
+    this.fijoIndexadoOptimizada = 'fijo';
+    this.calculoAutomatico = 'si';
+    this.comparadorPrecios = true;
   }
 
   ngOnInit() {
@@ -133,7 +166,7 @@ export class FormCalculoComponent implements OnInit {
     // this.precioE6Optimizada = 0.14;
 
     this.calculosServ.getConsultas().subscribe((data: any) => {
-      // console.log(data);
+      console.log(data);
       this.historico = data.datos;
     });
   }
@@ -144,7 +177,7 @@ export class FormCalculoComponent implements OnInit {
         Swal.fire({
           type: 'error',
           text: 'Debe adjuntar algún archivo',
-          allowOutsideClick: false
+          allowOutsideClick: false,
         });
       }
       return;
@@ -193,7 +226,27 @@ export class FormCalculoComponent implements OnInit {
       impuestoElectrico: this.impuestoElectrico,
       descuentoPotencia: this.descuentoPotencia,
       descuentoEnergia: this.descuentoEnergia,
-      comparadorPrecios: this.comparadorPrecios
+      comparadorPrecios: this.comparadorPrecios,
+      observaciones: this.observaciones,
+      fijoIndexado: this.fijoIndexado,
+      fee: this.fee,
+      tarifaOptimizada: this.tarifaOptimizada,
+      fijoIndexadoOptimizada: this.fijoIndexadoOptimizada,
+      feeOpt: this.feeOpt,
+      preMensPlanaAct: this.preMensPlanaAct,
+      penalizacionAct: this.penalizacionAct,
+      inicioPenalizacionAct: this.inicioPenalizacionAct,
+      preMensPlanaOpt: this.preMensPlanaOpt,
+      penalizacionOpt: this.penalizacionOpt,
+      inicioPenalizacionOpt: this.inicioPenalizacionOpt,
+      formulaIndexadoActual: this.formulaIndexadoActual,
+      formulaIndexadoOptim: this.formulaIndexadoOptim,
+      descuentoGeneral: this.descuentoGeneral,
+      conceptoDescuento: this.conceptoDescuento,
+      descuentoPotenciaOpt: this.descuentoPotenciaOpt,
+      descuentoEnergiaOpt: this.descuentoEnergiaOpt,
+      descuentoGeneralOpt: this.descuentoGeneralOpt,
+      conceptoDescuentoOpt: this.conceptoDescuentoOpt,
     };
     this.calculoRealizado.emit(datos);
   }
@@ -207,7 +260,7 @@ export class FormCalculoComponent implements OnInit {
         } else {
           Swal.fire({
             type: 'error',
-            text: 'Solo puede añadir 3 archivos.'
+            text: 'Solo puede añadir 3 archivos.',
           });
         }
       }
@@ -233,7 +286,7 @@ export class FormCalculoComponent implements OnInit {
       if (archivo.nombreArchivo == nombreArchivo) {
         Swal.fire({
           type: 'error',
-          text: 'El archivo ' + nombreArchivo + ' ya está agregado.'
+          text: 'El archivo ' + nombreArchivo + ' ya está agregado.',
         });
         return true;
       }
@@ -254,7 +307,7 @@ export class FormCalculoComponent implements OnInit {
     if (tamanio > 8) {
       Swal.fire({
         type: 'error',
-        text: 'El archivo excede en tamaño.'
+        text: 'El archivo excede en tamaño.',
       });
       return true;
     } else {
@@ -273,19 +326,21 @@ export class FormCalculoComponent implements OnInit {
     this.archivos = [];
   }
 
-  cambioTarifa() {
-    if (!this.esTarifa6x()) {
-      this.calculoAutomatico = 'si';
+  esTarifa3x() {
+    if (this.tarifa === '3.0A' || this.tarifa === '3.1A') {
+      return true;
+    } else {
+      return false;
     }
   }
 
-  esTarifa6x() {
+  esTarifa6x(tarifa: string) {
     if (
-      this.tarifa === '6.1A' ||
-      this.tarifa === '6.2' ||
-      this.tarifa === '6.3' ||
-      this.tarifa === '6.4' ||
-      this.tarifa === '6.5'
+      tarifa === '6.1A' ||
+      tarifa === '6.2' ||
+      tarifa === '6.3' ||
+      tarifa === '6.4' ||
+      tarifa === '6.5'
     ) {
       return true;
     } else {
@@ -349,6 +404,22 @@ export class FormCalculoComponent implements OnInit {
     this.impuestoElectrico = this.historico[index].impuesto_elec;
     this.descuentoPotencia = this.historico[index].desc_pot;
     this.descuentoEnergia = this.historico[index].desc_ener;
+    this.tarifaOptimizada = this.historico[index].tarifa_nueva;
+    this.fijoIndexado = this.historico[index].tipo_tarifa_actual;
+    this.fijoIndexadoOptimizada = this.historico[index].tipo_tarifa_nueva;
+    this.observaciones = this.historico[index].observaciones;
+    this.descuentoGeneral = this.historico[index].des_general;
+    this.descuentoGeneralOpt = this.historico[index].des_general_nuevo;
+    this.descuentoPotenciaOpt = this.historico[index].des_pot_nuevo;
+    this.descuentoEnergiaOpt = this.historico[index].des_ener_nuevo;
+    this.conceptoDescuento = this.historico[index].desc_actual_string;
+    this.conceptoDescuentoOpt = this.historico[index].desc_nuevo_string;
+    this.preMensPlanaAct = this.historico[index].prec_mens_act;
+    this.penalizacionAct = this.historico[index].penalizacion_act;
+    this.inicioPenalizacionAct = this.historico[index].inicio_penalizacion_act;
+    this.preMensPlanaOpt = this.historico[index].prec_mens_nuevo;
+    this.penalizacionOpt = this.historico[index].penalizacion_nuevo;
+    this.inicioPenalizacionOpt = this.historico[index].inicio_penalizacion_nuevo;
   }
 
   tratarCeros(valor: any) {
@@ -362,32 +433,17 @@ export class FormCalculoComponent implements OnInit {
   borrarRegistro(fecha: Date) {
     const dt = new Date(fecha);
     const fechaString =
-      dt
-        .getFullYear()
-        .toString()
-        .padStart(4, '0') +
+      dt.getFullYear().toString().padStart(4, '0') +
       '-' +
       (dt.getMonth() + 1).toString().padStart(2, '0') +
       '-' +
-      dt
-        .getDate()
-        .toString()
-        .padStart(2, '0') +
+      dt.getDate().toString().padStart(2, '0') +
       ' ' +
-      dt
-        .getHours()
-        .toString()
-        .padStart(2, '0') +
+      dt.getHours().toString().padStart(2, '0') +
       ':' +
-      dt
-        .getMinutes()
-        .toString()
-        .padStart(2, '0') +
+      dt.getMinutes().toString().padStart(2, '0') +
       ':' +
-      dt
-        .getSeconds()
-        .toString()
-        .padStart(2, '0');
+      dt.getSeconds().toString().padStart(2, '0');
     // console.log(fechaString);
     Swal.fire({
       type: 'question',
@@ -395,8 +451,8 @@ export class FormCalculoComponent implements OnInit {
       showCancelButton: true,
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
       if (result.value) {
         this.calculosServ.borrarConsulta(fechaString).subscribe((data: any) => {
           if (data.ok) {
@@ -409,9 +465,5 @@ export class FormCalculoComponent implements OnInit {
         });
       }
     });
-  }
-
-  compararPrecios() {
-    this.calculoAutomatico = 'si';
   }
 }

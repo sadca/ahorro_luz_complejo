@@ -1,18 +1,20 @@
 <div #todo id="todo" class="mt-lg-5" style="width: 80%;margin-left: 10%;">
-    <!-- <button (click)="generarPDF($event)" class="btn btn-primary">Generar PDF</button> -->
-    <!-- <button click="document.getElementsByTagName('canvas')[0].exportChart({format: 'jpg'});"
-        class="btn btn-sm btn-primary">Exportar gráficos</button> -->
+
     <a href="#" (click)="exportarPDF($event)" class="btn btn-sm btn-primary">Exportar PDF</a>
+
     <div class="row">
         <div class="col-12">
             <h1 class="text-center mt-5">{{formulario.propietario}}</h1>
             <h3 class="text-center">Tarifa {{formulario.tarifa}}</h3>
         </div>
     </div>
-    <!-- <hr class="bg-dark"> -->
+
     <br><br>
+
     <h3 class="text-center">POTENCIA</h3>
+
     <hr class="bg-dark">
+
     <div class="row" *ngIf="costeTotalPotencia.length > 1">
         <div class="col-12 text-center">
             <!-- TABLA DE POTENCIAS 3.X -->
@@ -29,15 +31,15 @@
                 <tbody>
                     <tr>
                         <td>Actual</td>
-                        <td>{{datos[1].data[0].potenciaP1}}</td>
-                        <td>{{datos[1].data[0].potenciaP2}}</td>
-                        <td>{{datos[1].data[0].potenciaP3}}</td>
+                        <td>{{datos[1].data[0].potencia1}}</td>
+                        <td>{{datos[1].data[0].potencia2}}</td>
+                        <td>{{datos[1].data[0].potencia3}}</td>
                     </tr>
                     <tr>
                         <td>Optimizada</td>
-                        <td>{{datos[0].data[0].potenciaP1}}</td>
-                        <td>{{datos[0].data[0].potenciaP2}}</td>
-                        <td>{{datos[0].data[0].potenciaP3}}</td>
+                        <td>{{datos[0].data[0].potencia1}}</td>
+                        <td>{{datos[0].data[0].potencia2}}</td>
+                        <td>{{datos[0].data[0].potencia3}}</td>
                     </tr>
                     <tr>
                         <td>Recomendada</td>
@@ -64,21 +66,21 @@
                 <tbody>
                     <tr>
                         <td>Actual</td>
-                        <td>{{datos[1].data[0].potenciaP1}}</td>
-                        <td>{{datos[1].data[0].potenciaP2}}</td>
-                        <td>{{datos[1].data[0].potenciaP3}}</td>
-                        <td>{{datos[1].data[0].potenciaP4}}</td>
-                        <td>{{datos[1].data[0].potenciaP5}}</td>
-                        <td>{{datos[1].data[0].potenciaP6}}</td>
+                        <td>{{datos[1].data[0].potencia1}}</td>
+                        <td>{{datos[1].data[0].potencia2}}</td>
+                        <td>{{datos[1].data[0].potencia3}}</td>
+                        <td>{{datos[1].data[0].potencia4}}</td>
+                        <td>{{datos[1].data[0].potencia5}}</td>
+                        <td>{{datos[1].data[0].potencia6}}</td>
                     </tr>
                     <tr>
                         <td>Optimizada</td>
-                        <td>{{datos[0].data[0].potenciaP1}}</td>
-                        <td>{{datos[0].data[0].potenciaP2}}</td>
-                        <td>{{datos[0].data[0].potenciaP3}}</td>
-                        <td>{{datos[0].data[0].potenciaP4}}</td>
-                        <td>{{datos[0].data[0].potenciaP5}}</td>
-                        <td>{{datos[0].data[0].potenciaP6}}</td>
+                        <td>{{datos[0].data[0].potencia1}}</td>
+                        <td>{{datos[0].data[0].potencia2}}</td>
+                        <td>{{datos[0].data[0].potencia3}}</td>
+                        <td>{{datos[0].data[0].potencia4}}</td>
+                        <td>{{datos[0].data[0].potencia5}}</td>
+                        <td>{{datos[0].data[0].potencia6}}</td>
                     </tr>
                     <tr>
                         <td>Recomendada</td>
@@ -96,156 +98,6 @@
 
     <!-- PARTE DEL CÁLCULO 3.X -->
     <div id="calculos" class="row text-center" *ngIf="costeTotalPotencia.length > 1">
-        <!-- <div class="col-lg-6 col-sm-12 text-center" *ngIf="formulario.tarifa != '6.1A' && formulario.tarifa != '6.2' 
-            && formulario.tarifa != '6.3' && formulario.tarifa != '6.4' && formulario.tarifa != '6.5'">
-            <h3 class="text-center">Pagado</h3>
-            <table id="pagado" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[1].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.coste | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#pagado').tableExport({type:'xlsx',bootstrap:true});">Exportar
-                tabla (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#pagado').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#pagado').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div> -->
-        <!-- <button class="btn btn-success" onclick="TableExport(document.getElementsByTagName('table'),{
-                    headers: true,       // (Boolean), display table headers (th or td elements) in the <thead>, (default: true)
-                    footers: true,       // (Boolean), display table footers (th or td elements) in the <tfoot>, (default: false)
-                    formats: ['xlsx', 'csv', 'txt'],   // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
-                    filename: 'id',      // (id, String), filename for the downloaded file, (default: 'id')
-                    bootstrap: true,     // (Boolean), style buttons using bootstrap, (default: true)
-                    exportButtons: true, // (Boolean), automatically generate the built-in export buttons for each of the specified formats (default: true)
-                    position: 'bottom',  // (top, bottom), position of the caption element relative to table, (default: 'bottom')
-                    ignoreRows: null,    // (Number, Number[]), row indices to exclude from the exported file(s) (default: null)
-                    ignoreCols: null,    // (Number, Number[]), column indices to exclude from the exported file(s) (default: null)
-                    trimWhitespace: true,// (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s) (default: false)
-                    RTL: false           // (Boolean), set direction of the worksheet to right-to-left (default: false)
-                });">Exportar
-            tabla</button> -->
-        <!-- <div class="col-lg-6 col-sm-12 text-center" *ngIf="formulario.tarifa != '6.1A' && formulario.tarifa != '6.2' 
-            && formulario.tarifa != '6.3' && formulario.tarifa != '6.4' && formulario.tarifa != '6.5'">
-            <h3 class="text-center">Calculado</h3>
-            <table id="calculado" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[0].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.coste | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado').tableExport({type:'xlsx',bootstrap:true});">Exportar tabla (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#calculado').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div> -->
-
-        <!-- PARTE DEL CÁLCULO 6.X -->
-        <!-- <div class="col-lg-6 col-sm-12 text-center" *ngIf="formulario.tarifa == '6.1A' || formulario.tarifa == '6.2' 
-            || formulario.tarifa == '6.3' || formulario.tarifa == '6.4' || formulario.tarifa == '6.5'">
-            <h3 class="text-center">Pagado</h3>
-            <table id="pagado2" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste Sin Excesos</th>
-                        <th scope="col">Excesos</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[1].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.costeSinExc | currency:'EUR'}}</td>
-                        <td>{{res.excesos | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#pagado2').tableExport({type:'xlsx',bootstrap:true});">Exportar
-                tabla (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#pagado2').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#pagado2').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div> -->
-        <!-- <div class="col-lg-6 col-sm-12 text-center" *ngIf="formulario.tarifa == '6.1A' || formulario.tarifa == '6.2' 
-            || formulario.tarifa == '6.3' || formulario.tarifa == '6.4' || formulario.tarifa == '6.5'">
-            <h3 class="text-center">Calculado</h3>
-            <table id="calculado2" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste Sin Excesos</th>
-                        <th scope="col">Excesos</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[0].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.costeSinExc | currency:'EUR'}}</td>
-                        <td>{{res.excesos | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado2').tableExport({type:'xlsx',bootstrap:true});">Exportar tabla (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado2').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#calculado2').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div> -->
 
         <select #tipoGraf1 name="tipoGraf1" class="form-control mt-5">
             <option *ngFor="let tipo of tiposChart" [value]="tipo.valor" [defaultSelected]="tipo.default">
@@ -278,11 +130,10 @@
         </div>
     </div>
 
-    <br>
-    <br>
-    <br>
-    <br>
+    <br><br><br><br>
+
     <h3 class="text-center">ENERGÍA</h3>
+
     <hr class="bg-dark">
 
     <div class="row text-center" *ngIf="costeTotalPotencia.length > 1">
@@ -380,216 +231,6 @@
                 </tr>
             </tbody>
         </table>
-        <!-- 
-        <div class="col-lg-12 col-sm-12 text-center" *ngIf="formulario.tarifa != '6.1A' && formulario.tarifa != '6.2' 
-            && formulario.tarifa != '6.3' && formulario.tarifa != '6.4' && formulario.tarifa != '6.5'">
-            <h3 class="text-center">Energia Pagada</h3>
-            <table id="calculado3" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste E1</th>
-                        <th scope="col">Coste E2</th>
-                        <th scope="col">Coste E3</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[2].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.costeActual1 | currency:'EUR'}}</td>
-                        <td>{{res.costeActual2 | currency:'EUR'}}</td>
-                        <td>{{res.costeActual3 | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado3').tableExport({type:'xlsx',bootstrap:true});">Exportar tabla
-                (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado3').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#calculado3').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div>
-
-        <div class="col-lg-12 col-sm-12 text-center" *ngIf="formulario.tarifa != '6.1A' && formulario.tarifa != '6.2' 
-            && formulario.tarifa != '6.3' && formulario.tarifa != '6.4' && formulario.tarifa != '6.5'">
-            <h3 class="text-center">Energia Calculada</h3>
-            <table id="calculado4" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste E1</th>
-                        <th scope="col">Coste E2</th>
-                        <th scope="col">Coste E3</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[2].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.costeNuevo1 | currency:'EUR'}}</td>
-                        <td>{{res.costeNuevo2 | currency:'EUR'}}</td>
-                        <td>{{res.costeNuevo3 | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado4').tableExport({type:'xlsx',bootstrap:true});">Exportar tabla
-                (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado4').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#calculado4').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div>
-
-
-        <div class="col-lg-12 col-sm-12 text-center" *ngIf="formulario.tarifa == '6.1A' || formulario.tarifa == '6.2' 
-            || formulario.tarifa == '6.3' || formulario.tarifa == '6.4' || formulario.tarifa == '6.5'">
-            <h3 class="text-center">Energia Pagada</h3>
-            <table id="calculado5" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste E1</th>
-                        <th scope="col">Coste E2</th>
-                        <th scope="col">Coste E3</th>
-                        <th scope="col">Coste E4</th>
-                        <th scope="col">Coste E5</th>
-                        <th scope="col">Coste E6</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[2].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.costeActual1 | currency:'EUR'}}</td>
-                        <td>{{res.costeActual2 | currency:'EUR'}}</td>
-                        <td>{{res.costeActual3 | currency:'EUR'}}</td>
-                        <td>{{res.costeActual4 | currency:'EUR'}}</td>
-                        <td>{{res.costeActual5 | currency:'EUR'}}</td>
-                        <td>{{res.costeActual6 | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado4').tableExport({type:'xlsx',bootstrap:true});">Exportar tabla
-                (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado4').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#calculado4').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div>
-
-        <div class="col-lg-12 col-sm-12 text-center" *ngIf="formulario.tarifa == '6.1A' || formulario.tarifa == '6.2' 
-            || formulario.tarifa == '6.3' || formulario.tarifa == '6.4' || formulario.tarifa == '6.5'">
-            <h3 class="text-center">Energia Calculada</h3>
-            <table id="calculado5" class="table table-striped table-dark text-center">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Coste E1</th>
-                        <th scope="col">Coste E2</th>
-                        <th scope="col">Coste E3</th>
-                        <th scope="col">Coste E4</th>
-                        <th scope="col">Coste E5</th>
-                        <th scope="col">Coste E6</th>
-                        <th scope="col">Días</th>
-                        <th scope="col">Fecha Inicio</th>
-                        <th scope="col">Fecha Fin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let res of datos[2].data">
-                        <th scope="row">{{res.index}}</th>
-                        <td>{{res.costeNuevo1 | currency:'EUR'}}</td>
-                        <td>{{res.costeNuevo2 | currency:'EUR'}}</td>
-                        <td>{{res.costeNuevo3 | currency:'EUR'}}</td>
-                        <td>{{res.costeNuevo4 | currency:'EUR'}}</td>
-                        <td>{{res.costeNuevo5 | currency:'EUR'}}</td>
-                        <td>{{res.costeNuevo6 | currency:'EUR'}}</td>
-                        <td>{{res.dias}}</td>
-                        <td>{{res.fechaInicio | date:'dd/MM/yyyy'}}</td>
-                        <td>{{res.fechaFin | date:'dd/MM/yyyy'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado5').tableExport({type:'xlsx',bootstrap:true});">Exportar tabla
-                (EXCEL)</button>
-            <button class="btn btn-success btn-sm mr-1"
-                onclick="$('#calculado5').tableExport({type:'pdf',bootstrap:true});">Exportar
-                tabla (PDF)</button>
-            <button class="btn btn-success btn-sm"
-                onclick="$('#calculado5').tableExport({type:'csv',bootstrap:true});">Exportar
-                tabla (CSV)</button>
-        </div> -->
-
-        <!-- <select #tipoGraf3 name="tipoGraf3" class="form-control mt-5">
-            <option *ngFor="let tipo of tiposChart" [value]="tipo.valor" [defaultSelected]="tipo.default">
-                {{tipo.nombre}}</option>
-        </select>
-
-        <div class="col-12">
-            <app-grafico *ngIf="costeTotalEnergiaE1.length > 1" [barChartType]="tipoGraf3.value"
-                [barChartData]="costeTotalEnergiaE1" [barChartLabels]="labelsEnergia">
-            </app-grafico>
-            <br>
-            <a href="#" (click)="exportarGrafico($event, 2)" class="btn btn-sm btn-primary">Exportar gráfico</a>
-        </div>
-
-        <br>
-        <br>
-
-        <select #tipoGraf4 name="tipoGraf4" class="form-control mt-5">
-            <option *ngFor="let tipo of tiposChart" [value]="tipo.valor" [defaultSelected]="tipo.default">
-                {{tipo.nombre}}</option>
-        </select>
-
-        <div class="col-12">
-            <app-grafico *ngIf="costeTotalEnergiaE2.length > 1" [barChartType]="tipoGraf4.value"
-                [barChartData]="costeTotalEnergiaE2" [barChartLabels]="labelsEnergia">
-            </app-grafico>
-            <br>
-            <a href="#" (click)="exportarGrafico($event, 3)" class="btn btn-sm btn-primary">Exportar gráfico</a>
-        </div>
-
-        <br>
-        <br>
-
-        <select #tipoGraf5 name="tipoGraf5" class="form-control mt-5">
-            <option *ngFor="let tipo of tiposChart" [value]="tipo.valor" [defaultSelected]="tipo.default">
-                {{tipo.nombre}}</option>
-        </select>
-
-        <div class="col-12">
-            <app-grafico *ngIf="costeTotalEnergiaE3.length > 1" [barChartType]="tipoGraf5.value"
-                [barChartData]="costeTotalEnergiaE3" [barChartLabels]="labelsEnergia">
-            </app-grafico>
-            <br>
-            <a href="#" (click)="exportarGrafico($event, 4)" class="btn btn-sm btn-primary">Exportar gráfico</a>
-        </div> -->
 
         <br>
         <br>
@@ -657,11 +298,13 @@
         </div>
 
     </div>
-    <br>
-    <br><br>
-    <br>
+
+    <br><br><br><br>
+
     <div class="row">
         <div class="col-12 text-center">
             <img #imagen id="imagen" src="assets/img/logo_nuevo.png">
         </div>
     </div>
+
+</div>

@@ -9,8 +9,8 @@ export class CalculosService {
   webServiceUrl: string;
 
   constructor(private http: HttpClient) {
-    // this.webServiceUrl = 'http://localhost:3000/';
-    this.webServiceUrl = 'https://sadca.es:3000/';
+    this.webServiceUrl = 'http://localhost:3000/';
+    // this.webServiceUrl = 'https://sadca.es:3000/';
   }
 
   getConsultas() {
@@ -70,6 +70,26 @@ export class CalculosService {
     formdata.append('descuentoPotencia', datos.descuentoPotencia);
     formdata.append('descuentoEnergia', datos.descuentoEnergia);
     formdata.append('comparadorPrecios', datos.comparadorPrecios);
+    formdata.append('observaciones', datos.observaciones);
+    formdata.append('fijoIndexado', datos.fijoIndexado);
+    formdata.append('fee', datos.fee);
+    formdata.append('tarifaOptimizada', datos.tarifaOptimizada);
+    formdata.append('fijoIndexadoOptimizada', datos.fijoIndexadoOptimizada);
+    formdata.append('feeOpt', datos.feeOpt);
+    formdata.append('preMensPlanaAct', datos.preMensPlanaAct);
+    formdata.append('penalizacionAct', datos.penalizacionAct);
+    formdata.append('inicioPenalizacionAct', datos.inicioPenalizacionAct);
+    formdata.append('preMensPlanaOpt', datos.preMensPlanaOpt);
+    formdata.append('penalizacionOpt', datos.penalizacionOpt);
+    formdata.append('inicioPenalizacionOpt', datos.inicioPenalizacionOpt);
+    formdata.append('formulaIndexadoActual', datos.formulaIndexadoActual);
+    formdata.append('formulaIndexadoOptim', datos.formulaIndexadoOptim);
+    formdata.append('descuentoGeneral', datos.descuentoGeneral);
+    formdata.append('conceptoDescuento', datos.conceptoDescuento);
+    formdata.append('descuentoPotenciaOpt', datos.descuentoPotenciaOpt);
+    formdata.append('descuentoEnergiaOpt', datos.descuentoEnergiaOpt);
+    formdata.append('descuentoGeneralOpt', datos.descuentoGeneralOpt);
+    formdata.append('conceptoDescuentoOpt', datos.conceptoDescuentoOpt);
 
     const url = this.webServiceUrl;
 
